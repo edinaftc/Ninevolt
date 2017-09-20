@@ -16,5 +16,6 @@ public class ExceptionHandling {
     PrintWriter pw = new PrintWriter(sw);
     ex.printStackTrace(pw);
     opMode.telemetry.addData("New " + ex.getClass().toString(), sw.toString());
+    opMode.telemetry.update();
   }
 }
