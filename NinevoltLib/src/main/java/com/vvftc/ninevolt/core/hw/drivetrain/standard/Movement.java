@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 /**
- * Created by Richik SC on 2/23/2017.
+ * Created by VVMS FTC teams on 2/23/2017.
  */
 
 public class Movement implements MovementBase {
@@ -219,7 +219,7 @@ public class Movement implements MovementBase {
     // Create new PIDController with K_p of 0.2 and iteration time of 100;
     PIDControl pid = new PIDControl(0.2, 100);
 
-    while (ctxl.getRuntime() < startTime + duration) {
+    while (ctxl.getRuntime() < startTime + duration && ctxl.opModeIsActive()) {
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
       telemetry.addData("currRotation", currentRotation);
       telemetry.update();
@@ -239,10 +239,13 @@ public class Movement implements MovementBase {
     // Create new PIDController with K_p of 0.2 and iteration time of 100;
     PIDControl pid = new PIDControl(0.2, 100);
 
-    while (ctxl.getRuntime() < startTime + duration) {
+    while (ctxl.getRuntime() < startTime + duration && ctxl.opModeIsActive()) {
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
       telemetry.addData("currRotation", currentRotation);
       telemetry.update();
+      if (currentRotation < (targetRotation + 1) || currentRotation > (targetRotation - 1)) {
+        break;
+      }
       output = pid.controlPI(targetRotation, currentRotation);
       directDrive(0, power, (float)output);
       ctxl.sleep(pid.K.getT());
