@@ -181,7 +181,8 @@ public class Movement implements MovementBase {
 
   @Override
   public void rotate(double angle) throws Exception {
-
+    telemetry.addData("Ninevolt.Movement", "Sorry, method `rotate` not supported yet");
+    telemetry.update();
   }
 
   @Override

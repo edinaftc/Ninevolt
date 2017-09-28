@@ -126,7 +126,8 @@ public class Movement implements MovementBase {
 
   @Override
   public void rotate(double angle) {
-
+    telemetry.addData("Ninevolt.Movement", "Sorry, method `rotate` not supported yet");
+    telemetry.update();
   }
 
 //  // Compat method - Ninevolt HotSwap
