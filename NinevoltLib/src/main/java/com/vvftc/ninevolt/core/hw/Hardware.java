@@ -1,5 +1,6 @@
 package com.vvftc.ninevolt.core.hw;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.vvftc.ninevolt.util.DcMotorPair;
@@ -30,6 +31,8 @@ public class Hardware {
   public DcMotorPair motorR;
 
   public ModernRoboticsI2cRangeSensor rangeSensor;
+  public BNO055IMU imu;
+  public BNO055IMU.Parameters imuParams;
 
   // Lot to do, decide, getters and setters or public members (usually bad practice but used by
   // HW PushBot FTC sample class)
@@ -94,6 +97,14 @@ public class Hardware {
       motorBL.setZeroPowerBehavior(dfZeroPowerBehavior);
       motorBR.setZeroPowerBehavior(dfZeroPowerBehavior);
     }
+    if (imu != null) {
+      if(imuParams != null) {
+        imu.initialize(imuParams);
+      } else {
+        throw new Exception("YOU SUCK! YOU DID NOT INCLUDE PARAMETERS! THIS SHOULD NOT HAPPEN " +
+            "UNLESS YOU ARE DOING THINGS MANUALLY WHICH YOU SHOULD NOT BE DOING ANYWAY! USE HB!");
+      }
+    }
   }
 
   public void setMotorMode(MotorMode motorMode) {
@@ -118,6 +129,14 @@ public class Hardware {
 
   public void setMotorBR(DcMotor motorBR) {
     this.motorBR = motorBR;
+  }
+
+  public void setImu(BNO055IMU imu) {
+    this.imu = imu;
+  }
+
+  public void setImuParams(BNO055IMU.Parameters imuParams) {
+    this.imuParams = imuParams;
   }
 
   public void setDfZeroPowerBehavior(DcMotor.ZeroPowerBehavior dfZeroPowerBehavior) {

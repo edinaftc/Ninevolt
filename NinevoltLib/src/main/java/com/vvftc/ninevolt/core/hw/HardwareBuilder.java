@@ -1,5 +1,6 @@
 package com.vvftc.ninevolt.core.hw;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -45,6 +46,12 @@ public class HardwareBuilder {
   public HardwareBuilder addMotorBR(String hwMapName) throws Exception{
     if (!motorAllowed) { throw new Exception("Must configure motors before adding any!"); }
     building.setMotorBR(hardwareMap.dcMotor.get(hwMapName));
+    return this;
+  }
+
+  public HardwareBuilder addBoschIMU(String hwMapName, BNO055IMU.Parameters parameters) {
+    building.setImu(hardwareMap.get(BNO055IMU.class, hwMapName));
+    building.setImuParams(parameters);
     return this;
   }
 

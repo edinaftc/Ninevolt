@@ -8,4 +8,6 @@ public interface MovementBase {
   void yDrive(double dist) throws Exception; // TODO: Name temporary, TBD.
   void rotate(double angle) throws Exception;
   void driveUsingRange(double threshold) throws Exception;
+  void driveUsingGyro(double duration, float power) throws Exception;
+  void driveUsingGyro(double duration, float power, double targetRotation) throws Exception;
 }

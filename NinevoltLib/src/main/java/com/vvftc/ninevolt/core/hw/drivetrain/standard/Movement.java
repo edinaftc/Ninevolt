@@ -6,9 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 import com.vvftc.ninevolt.core.hw.Hardware;
 import com.vvftc.ninevolt.core.hw.drivetrain.MovementBase;
+import com.vvftc.ninevolt.core.hw.sensors.PIDControl;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 /**
  * Created by Richik SC on 2/23/2017.
@@ -158,11 +163,11 @@ public class Movement implements MovementBase {
         telemetry.addData("rVal", "< 0");
       }
       lMotorPower = yVal * (1 + _rVal);
-      rMotorPower = yVal;
-    } else if (_rVal > 0) {
-      telemetry.addData("rVal", "< 0");
       rMotorPower = yVal * (1 - _rVal);
-      lMotorPower = yVal;
+    } else if (_rVal > 0) {
+      telemetry.addData("rVal", "> 0");
+      rMotorPower = yVal * (1 + _rVal);
+      lMotorPower = yVal * (1 + _rVal);
     } else {
       lMotorPower = yVal;
       rMotorPower = yVal;
@@ -177,21 +182,7 @@ public class Movement implements MovementBase {
 
   // Compat method
   public void directDrive(double xVal, double yVal, double rVal) {
-    double _rVal = Range.clip(rVal, -1, 1);
-    double lMotorPower;
-    double rMotorPower;
-    if (_rVal < 0) {
-      lMotorPower = yVal * (1 + rVal);
-      rMotorPower = yVal;
-    } else if (rVal < 0) {
-      rMotorPower = yVal * (1 - rVal);
-      lMotorPower = yVal;
-    } else {
-      lMotorPower = yVal;
-      rMotorPower = yVal;
-    }
-    hardware.motorL.setPower(lMotorPower);
-    hardware.motorR.setPower(rMotorPower);
+    directDrive(yVal, rVal);
   }
 
   @Override
@@ -209,6 +200,52 @@ public class Movement implements MovementBase {
       directDrive(0.5f, 0);
       cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
       wait(10);
+    }
+  }
+
+  @Override
+  public void driveUsingGyro(double duration, float power) throws Exception {
+    checkAuto();
+    double startTime = ctxl.getRuntime();
+    Orientation targetRotationObj = hardware.imu.getAngularOrientation(
+        AxesReference.INTRINSIC,
+        AxesOrder.ZYX,
+        AngleUnit.DEGREES
+    );
+    double targetRotation = (double) targetRotationObj.firstAngle;
+    double currentRotation;
+    double output;
+
+    // Create new PIDController with K_p of 0.2 and iteration time of 100;
+    PIDControl pid = new PIDControl(0.2, 100);
+
+    while (ctxl.getRuntime() < startTime + duration) {
+      currentRotation = hardware.imu.getAngularOrientation().firstAngle;
+      telemetry.addData("currRotation", currentRotation);
+      telemetry.update();
+      output = pid.controlPI(targetRotation, currentRotation);
+      directDrive(0, power, (float)output);
+      ctxl.sleep(pid.K.getT());
+    }
+  }
+
+  @Override
+  public void driveUsingGyro(double duration, float power, double targetRotation) throws Exception {
+    checkAuto();
+    double startTime = ctxl.getRuntime();
+    double currentRotation;
+    double output;
+
+    // Create new PIDController with K_p of 0.2 and iteration time of 100;
+    PIDControl pid = new PIDControl(0.2, 100);
+
+    while (ctxl.getRuntime() < startTime + duration) {
+      currentRotation = hardware.imu.getAngularOrientation().firstAngle;
+      telemetry.addData("currRotation", currentRotation);
+      telemetry.update();
+      output = pid.controlPI(targetRotation, currentRotation);
+      directDrive(0, power, (float)output);
+      ctxl.sleep(pid.K.getT());
     }
   }
 

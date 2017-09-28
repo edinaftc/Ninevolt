@@ -6,9 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 import com.vvftc.ninevolt.core.hw.Hardware;
 import com.vvftc.ninevolt.core.hw.drivetrain.MovementBase;
+import com.vvftc.ninevolt.core.hw.sensors.PIDControl;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.util.Locale;
 
@@ -275,5 +280,50 @@ public class Movement implements MovementBase {
     hardware.motorBR.setPower(backRight);
   }
 
+  @Override
+  public void driveUsingGyro(double duration, float power) throws Exception {
+    checkAuto();
+    double startTime = ctxl.getRuntime();
+    Orientation targetRotationObj = hardware.imu.getAngularOrientation(
+        AxesReference.INTRINSIC,
+        AxesOrder.ZYX,
+        AngleUnit.DEGREES
+    );
+    double targetRotation = (double) targetRotationObj.firstAngle;
+    double currentRotation;
+    double output;
+
+    // Create new PIDController with K_p of 0.2 and iteration time of 100;
+    PIDControl pid = new PIDControl(0.2, 100);
+
+    while (ctxl.getRuntime() < startTime + duration) {
+      currentRotation = hardware.imu.getAngularOrientation().firstAngle;
+      telemetry.addData("currRotation", currentRotation);
+      telemetry.update();
+      output = pid.controlPI(targetRotation, currentRotation);
+      directDrive(0, power, (float)output);
+      ctxl.sleep(pid.K.getT());
+    }
+  }
+
+  @Override
+  public void driveUsingGyro(double duration, float power, double targetRotation) throws Exception {
+    checkAuto();
+    double startTime = ctxl.getRuntime();
+    double currentRotation;
+    double output;
+
+    // Create new PIDController with K_p of 0.2 and iteration time of 100;
+    PIDControl pid = new PIDControl(0.2, 100);
+
+    while (ctxl.getRuntime() < startTime + duration) {
+      currentRotation = hardware.imu.getAngularOrientation().firstAngle;
+      telemetry.addData("currRotation", currentRotation);
+      telemetry.update();
+      output = pid.controlPI(targetRotation, currentRotation);
+      directDrive(0, power, (float)output);
+      ctxl.sleep(pid.K.getT());
+    }
+  }
 
 }
