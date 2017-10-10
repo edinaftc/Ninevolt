@@ -91,7 +91,8 @@ public class Movement implements MovementBase {
         hardware.motorFL.getCurrentPosition() != 0 &&
             hardware.motorFR.getCurrentPosition() != 0 &&
             hardware.motorBL.getCurrentPosition() != 0 &&
-            hardware.motorBR.getCurrentPosition() != 0
+            hardware.motorBR.getCurrentPosition() != 0 &&
+            ctxl.opModeIsActive()
         ) {
       ctxl.sleep(500);
     }
