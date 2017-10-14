@@ -138,6 +138,14 @@ public class Movement implements MovementBase {
             hardware.motorBL.getCurrentPosition(),
             hardware.motorBR.getCurrentPosition()
         );
+        if (isVerbose()) {
+          telemetry.addData("Path3", "Power at %.2f :%.2f :%.2f :%.2f",
+              hardware.motorFL.getPower(),
+              hardware.motorFR.getPower(),
+              hardware.motorBL.getPower(),
+              hardware.motorBR.getPower()
+          );
+        }
         telemetry.update();
 
 
@@ -176,6 +184,14 @@ public class Movement implements MovementBase {
             hardware.motorBR.getCurrentPosition(),
             hardware.motorBR.getCurrentPosition()
         );
+        if (isVerbose()) {
+          telemetry.addData("Path3", "Power at %.2f :%.2f :%.2f :%.2f",
+              hardware.motorFL.getPower(),
+              hardware.motorFR.getPower(),
+              hardware.motorBL.getPower(),
+              hardware.motorBR.getPower()
+          );
+        }
         telemetry.update();
 
 
