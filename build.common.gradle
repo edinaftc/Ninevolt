@@ -100,4 +100,9 @@ repositories {
         dirs rootProject.file('libs')
     }
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.2.1'
+}
+
 apply from: 'build.release.gradle'
