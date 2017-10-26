@@ -168,7 +168,7 @@ public class Movement implements MovementBase {
     } else if (_rVal > 0) {
       telemetry.addData("rVal", "> 0");
       rMotorPower = yVal * (1 + _rVal);
-      lMotorPower = yVal * (1 + _rVal);
+      lMotorPower = yVal * (1 - _rVal);
     } else {
       lMotorPower = yVal;
       rMotorPower = yVal;
