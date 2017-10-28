@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 import com.vvftc.ninevolt.core.hw.Hardware;
 import com.vvftc.ninevolt.core.hw.drivetrain.MovementBase;
 import com.vvftc.ninevolt.core.hw.sensors.PIDControl;
+import com.vvftc.ninevolt.util.Threshold;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
 
@@ -221,6 +222,22 @@ public class Movement implements MovementBase {
       directDrive(0.5f);
       cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
       wait(10);
+    }
+  }
+
+  public void driveUsingRef(double refDistance, float forwardPower, double duration) {
+    double rangeDistance = hardware.rangeSensor.getDistance(DistanceUnit.CM);
+    double startTime = ctx.getRuntime();
+    while(ctx.getRuntime() + startTime <= duration) {
+      if(Threshold.withinThreshold(rangeDistance, refDistance, 0.1)) {
+        directDrive(forwardPower);
+      }
+      else if(rangeDistance < refDistance) {
+        directDrive(-0.1f, forwardPower, 0f);
+      }
+      else if(rangeDistance > refDistance) {
+        directDrive(0.1f, forwardPower, 0f);
+      }
     }
   }
 
