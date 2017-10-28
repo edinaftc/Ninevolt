@@ -3,6 +3,7 @@ package com.vvftc.ninevolt.core.hw;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.vvftc.ninevolt.util.DcMotorPair;
 
 /**
@@ -13,11 +14,8 @@ public class Hardware {
   public enum MotorMode {
     TWO_MOTORS, FOUR_MOTORS, HOLONOMIC
   }
-  public enum MotorType {
-    TETRIX_PITSCO, ANDYMARK
-  }
   private MotorMode motorMode;
-  private MotorType motorType;
+  private DcMotor.Direction motorDirection;
   private DcMotor.ZeroPowerBehavior dfZeroPowerBehavior;
 
 
@@ -45,26 +43,21 @@ public class Hardware {
 
   public void init() throws Exception {
     if (motorMode == MotorMode.HOLONOMIC) {
-      if(motorType == MotorType.ANDYMARK) {
-        motorFL.setDirection(DcMotor.Direction.REVERSE);
-        motorBL.setDirection(DcMotor.Direction.REVERSE);
-        motorFR.setDirection(DcMotor.Direction.REVERSE);
-        motorBR.setDirection(DcMotor.Direction.REVERSE);
-      } else if (motorType == MotorType.TETRIX_PITSCO) {
-        motorFL.setDirection(DcMotor.Direction.FORWARD);
-        motorBL.setDirection(DcMotor.Direction.FORWARD);
-        motorFR.setDirection(DcMotor.Direction.FORWARD);
-        motorBR.setDirection(DcMotor.Direction.FORWARD);
+      if(motorDirection != null) {
+        motorFL.setDirection(motorDirection);
+        motorBL.setDirection(motorDirection);
+        motorFR.setDirection(motorDirection);
+        motorBR.setDirection(motorDirection);
       } else {
         throw new Exception("Must specify motor type");
       }
     } else if (motorMode == MotorMode.FOUR_MOTORS) {
-      if(motorType == MotorType.ANDYMARK) {
+      if(motorDirection == DcMotor.Direction.REVERSE) {
         motorFL.setDirection(DcMotor.Direction.REVERSE);
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorFR.setDirection(DcMotor.Direction.FORWARD);
         motorBR.setDirection(DcMotor.Direction.FORWARD);
-      } else if (motorType == MotorType.TETRIX_PITSCO) {
+      } else if (motorDirection == DcMotor.Direction.FORWARD) {
         motorFL.setDirection(DcMotor.Direction.FORWARD);
         motorBL.setDirection(DcMotor.Direction.FORWARD);
         motorBR.setDirection(DcMotor.Direction.REVERSE);
@@ -75,10 +68,10 @@ public class Hardware {
       motorL = new DcMotorPair(motorFL, motorBL);
       motorR = new DcMotorPair(motorFR, motorBR);
     } else if(motorMode == MotorMode.TWO_MOTORS) {
-      if(motorType == MotorType.ANDYMARK) {
+      if(motorDirection == DcMotor.Direction.REVERSE) {
         motorFL.setDirection(DcMotor.Direction.REVERSE);
         motorFR.setDirection(DcMotor.Direction.FORWARD);
-      } else if (motorType == MotorType.TETRIX_PITSCO) {
+      } else if (motorDirection == DcMotor.Direction.FORWARD) {
         motorFL.setDirection(DcMotor.Direction.FORWARD);
         motorFR.setDirection(DcMotor.Direction.REVERSE);
       } else {
@@ -111,8 +104,8 @@ public class Hardware {
     this.motorMode = motorMode;
   }
 
-  public void setMotorType(MotorType motorType) {
-    this.motorType = motorType;
+  public void setMotorDirection(DcMotor.Direction direction) {
+    this.motorDirection = direction;
   }
 
   public void setMotorFL(DcMotor motorFL) {

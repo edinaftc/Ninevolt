@@ -1,6 +1,7 @@
 package com.vvftc.ninevolt.core.hw;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -21,9 +22,9 @@ public class HardwareBuilder {
   }
 
   public HardwareBuilder setMotorConfig(Hardware.MotorMode motorMode,
-                                        Hardware.MotorType motorType) {
+                                        DcMotor.Direction motorDirection) {
     building.setMotorMode(motorMode);
-    building.setMotorType(motorType);
+    building.setMotorDirection(motorDirection);
     motorAllowed = true;
     return this;
   }
