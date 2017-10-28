@@ -1,7 +1,10 @@
 package com.vvftc.ninevolt.examples;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.vvftc.ninevolt.core.hw.Hardware;
 import com.vvftc.ninevolt.core.hw.HardwareBuilder;
 import com.vvftc.ninevolt.core.hw.drivetrain.holonomic.Movement;
@@ -13,6 +16,7 @@ import com.vvftc.ninevolt.util.ExceptionHandling;
  */
 
 @Autonomous(name = "Holonomic Square", group = "Ninevolt Sample Autonomous")
+@Disabled
 public class HoloAutoOpMode extends LinearOpMode {
 
   private static final int PULSES_PER_MOTOR_REV = 28;
@@ -27,7 +31,7 @@ public class HoloAutoOpMode extends LinearOpMode {
 
   private void custom_init() throws Exception {
     HardwareBuilder hb = new HardwareBuilder(hardwareMap);
-    hb.setMotorConfig(Hardware.MotorMode.HOLONOMIC, Hardware.MotorType.ANDYMARK)
+    hb.setMotorConfig(Hardware.MotorMode.HOLONOMIC, DcMotor.Direction.FORWARD)
       .addMotorFL("motor_fl").addMotorFR("motor_fr")
       .addMotorBL("motor_bl").addMotorBR("motor_br");
     this.hardware = hb.build();
