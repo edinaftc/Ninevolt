@@ -12,7 +12,7 @@ import com.vvftc.ninevolt.util.DcMotorPair;
 
 public class Hardware {
   public enum MotorMode {
-    TWO_MOTORS, FOUR_MOTORS, HOLONOMIC
+    TWO_MOTORS, FOUR_MOTORS, HOLONOMIC, MECANUM
   }
   private MotorMode motorMode;
   private DcMotor.Direction motorDirection;
@@ -51,17 +51,31 @@ public class Hardware {
       } else {
         throw new Exception("Must specify motor type");
       }
-    } else if (motorMode == MotorMode.FOUR_MOTORS) {
-      if(motorDirection == DcMotor.Direction.REVERSE) {
+    } else if (motorMode == MotorMode.MECANUM) {
+      if(motorDirection == DcMotor.Direction.FORWARD) {
         motorFL.setDirection(DcMotor.Direction.REVERSE);
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorFR.setDirection(DcMotor.Direction.FORWARD);
         motorBR.setDirection(DcMotor.Direction.FORWARD);
-      } else if (motorDirection == DcMotor.Direction.FORWARD) {
+      } else if (motorDirection == DcMotor.Direction.REVERSE) {
         motorFL.setDirection(DcMotor.Direction.FORWARD);
         motorBL.setDirection(DcMotor.Direction.FORWARD);
         motorBR.setDirection(DcMotor.Direction.REVERSE);
         motorFR.setDirection(DcMotor.Direction.REVERSE);
+      } else {
+        throw new Exception("Must specify motor type");
+      }
+    } else if (motorMode == MotorMode.FOUR_MOTORS) {
+      if (motorDirection == DcMotor.Direction.FORWARD) {
+        motorFL.setDirection(DcMotor.Direction.FORWARD);
+        motorBL.setDirection(DcMotor.Direction.FORWARD);
+        motorBR.setDirection(DcMotor.Direction.REVERSE);
+        motorFR.setDirection(DcMotor.Direction.REVERSE);
+      } else if (motorDirection == DcMotor.Direction.REVERSE) {
+        motorFL.setDirection(DcMotor.Direction.REVERSE);
+        motorBL.setDirection(DcMotor.Direction.REVERSE);
+        motorFR.setDirection(DcMotor.Direction.FORWARD);
+        motorBR.setDirection(DcMotor.Direction.FORWARD);
       } else {
         throw new Exception("Must specify motor type");
       }
