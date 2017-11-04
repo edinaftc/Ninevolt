@@ -225,8 +225,19 @@ public class Movement implements MovementBase {
   }
 
   public void directDrive(float xVal, float yVal, float rotVal) {
-    // Holonomic formulas
+    hardware.motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    hardware.motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    hardware.motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    hardware.motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+    hardware.motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    hardware.motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    hardware.motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    hardware.motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+    double startTime = ctx.getRuntime();
+
+    // Holonomic formulas
     float frontLeft = yVal - xVal + rotVal;
     float frontRight = yVal + xVal - rotVal;
     float backRight = yVal - xVal - rotVal;
@@ -245,6 +256,15 @@ public class Movement implements MovementBase {
               (long) frontRight,
               (long) backLeft,
               (long) backRight
+          )
+      );
+
+      telemetry.addData("Wheel TPS",
+          String.format(Locale.US, "(%d, %d, %d, %d)",
+              (long) (hardware.motorFL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+              (long) (hardware.motorFR.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+              (long) (hardware.motorBL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+              (long) (hardware.motorBR.getCurrentPosition() / (ctx.getRuntime() - startTime))
           )
       );
       telemetry.update();
@@ -342,4 +362,3 @@ public class Movement implements MovementBase {
   }
 
 }
-
