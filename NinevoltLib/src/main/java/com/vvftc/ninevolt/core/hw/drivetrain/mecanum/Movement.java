@@ -224,7 +224,7 @@ public class Movement implements MovementBase {
     }
   }
 
-  public void directDrive(float xVal, float yVal, float rotVal) {
+  public void setRunUsingEncoders() {
     hardware.motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     hardware.motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     hardware.motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -234,7 +234,9 @@ public class Movement implements MovementBase {
     hardware.motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     hardware.motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     hardware.motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+  }
 
+  public void directDrive(float xVal, float yVal, float rotVal) {
     double startTime = ctx.getRuntime();
 
     // Holonomic formulas
@@ -259,14 +261,19 @@ public class Movement implements MovementBase {
           )
       );
 
-      telemetry.addData("Wheel TPS",
-          String.format(Locale.US, "(%d, %d, %d, %d)",
-              (long) (hardware.motorFL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
-              (long) (hardware.motorFR.getCurrentPosition() / (ctx.getRuntime() - startTime)),
-              (long) (hardware.motorBL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
-              (long) (hardware.motorBR.getCurrentPosition() / (ctx.getRuntime() - startTime))
-          )
-      );
+      if(hardware.motorFL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
+          hardware.motorFR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
+          hardware.motorBL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
+          hardware.motorBR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER) {
+        telemetry.addData("Wheel TPS",
+            String.format(Locale.US, "(%d, %d, %d, %d)",
+                (long) (hardware.motorFL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+                (long) (hardware.motorFR.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+                (long) (hardware.motorBL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+                (long) (hardware.motorBR.getCurrentPosition() / (ctx.getRuntime() - startTime))
+            )
+        );
+      }
       telemetry.update();
     }
 
