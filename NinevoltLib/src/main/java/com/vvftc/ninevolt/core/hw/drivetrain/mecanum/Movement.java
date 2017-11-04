@@ -223,9 +223,22 @@ public class Movement implements MovementBase {
     }
   }
 
-  public void directDrive(float xVal, float yVal, float rotVal) {
-    // Holonomic formulas
+  public void setRunUsingEncoders() {
+    hardware.motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    hardware.motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    hardware.motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    hardware.motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+    hardware.motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    hardware.motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    hardware.motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    hardware.motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+  }
+
+  public void directDrive(float xVal, float yVal, float rotVal) {
+    double startTime = ctx.getRuntime();
+
+    // Holonomic formulas
     float frontLeft = yVal - xVal + rotVal;
     float frontRight = yVal + xVal - rotVal;
     float backRight = yVal - xVal - rotVal;
@@ -246,6 +259,20 @@ public class Movement implements MovementBase {
               (long) backRight
           )
       );
+
+      if(hardware.motorFL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
+          hardware.motorFR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
+          hardware.motorBL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
+          hardware.motorBR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER) {
+        telemetry.addData("Wheel TPS",
+            String.format(Locale.US, "(%d, %d, %d, %d)",
+                (long) (hardware.motorFL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+                (long) (hardware.motorFR.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+                (long) (hardware.motorBL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+                (long) (hardware.motorBR.getCurrentPosition() / (ctx.getRuntime() - startTime))
+            )
+        );
+      }
       telemetry.update();
     }
 
