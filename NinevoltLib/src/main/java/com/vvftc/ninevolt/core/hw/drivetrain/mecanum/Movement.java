@@ -64,7 +64,7 @@ public class Movement implements MovementBase {
   }
 
   private int calculateTargetTicks(double targetInches) {
-    return (int)Math.round(targetInches * ppi);
+    return (int) Math.round(targetInches * ppi);
   }
 
   private void setPowerZero() {
@@ -113,11 +113,11 @@ public class Movement implements MovementBase {
     if (ctxl.opModeIsActive()) {
       int ticks = calculateTargetTicks(dist);
       hardware.motorFL.setTargetPosition(ticks);
-      hardware.motorFR.setTargetPosition(-1*ticks);
+      hardware.motorFR.setTargetPosition(-1 * ticks);
       hardware.motorBL.setTargetPosition(ticks);
-      hardware.motorBR.setTargetPosition(-1*ticks);
+      hardware.motorBR.setTargetPosition(-1 * ticks);
 
-      if(dist > 0)
+      if (dist > 0)
         directDrive(0, 0.1f, 0);
       else
         directDrive(0, -0.1f, 0);
@@ -157,13 +157,12 @@ public class Movement implements MovementBase {
       int ticks = calculateTargetTicks(dist);
       hardware.motorFL.setTargetPosition(ticks);
       hardware.motorFR.setTargetPosition(ticks);
-      hardware.motorBR.setTargetPosition(-1*ticks);
-      hardware.motorBR.setTargetPosition(-1*ticks);
+      hardware.motorBR.setTargetPosition(-1 * ticks);
+      hardware.motorBR.setTargetPosition(-1 * ticks);
 
-      if(dist > 0) {
+      if (dist > 0) {
         directDrive(0.1f, 0, 0);
-      }
-      else {
+      } else {
         directDrive(-0.1f, 0, 0);
         telemetry.addData("Else Horizontal", "Negative");
       }
@@ -204,7 +203,7 @@ public class Movement implements MovementBase {
 
   @Override
   public void driveUsingRange(double threshold) throws Exception {
-    if(autoAllowed) {
+    if (autoAllowed) {
       hardware.motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
       hardware.motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
       hardware.motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -217,7 +216,7 @@ public class Movement implements MovementBase {
     }
 
     double cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
-    while(cmDist > threshold) {
+    while (cmDist > threshold) {
       directDrive(0.5f);
       cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
       wait(10);
@@ -313,7 +312,7 @@ public class Movement implements MovementBase {
       telemetry.addData("currRotation", currentRotation);
       telemetry.update();
       output = pid.controlPI(targetRotation, currentRotation);
-      directDrive(0, power, (float)output);
+      directDrive(0, power, (float) output);
       ctxl.sleep(pid.K.getT());
     }
   }
@@ -336,10 +335,8 @@ public class Movement implements MovementBase {
         break;
       }
       output = pid.controlPI(targetRotation, currentRotation);
-      directDrive(0, power, (float)output);
+      directDrive(0, power, (float) output);
       ctxl.sleep(pid.K.getT());
     }
   }
-
 }
-
