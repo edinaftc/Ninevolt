@@ -5,7 +5,7 @@ package com.edinaftc.ninevolt.core.hw.drivetrain;
  */
 
 public interface MovementBase {
-  void yDrive(double dist) throws Exception; // TODO: Name temporary, TBD.
+  void yDrive(double dist) throws Exception;
   void rotate(double angle) throws Exception;
   void driveUsingRange(double threshold) throws Exception;
   void driveUsingGyro(double duration, float power) throws Exception;
