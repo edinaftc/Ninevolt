@@ -16,7 +16,7 @@ import com.edinaftc.ninevolt.util.ExceptionHandling;
 
 @Autonomous(name = "Holonomic Square", group = "Ninevolt Sample Autonomous")
 @Disabled
-public class HoloAutoOpMode extends LinearOpMode {
+public class HoloAutoOpMode_Legacy extends LinearOpMode {
 
   private static final int PULSES_PER_MOTOR_REV = 28;
   private static final double DRIVE_GEAR_REDUCTION = 40.0;
