@@ -1,4 +1,4 @@
-package com.vvftc.ninevolt.core.hw.sensors;
+package com.edinaftc.ninevolt.core.hw.sensors;
 
 /**
  * Created by Richik SC on 9/26/2017.

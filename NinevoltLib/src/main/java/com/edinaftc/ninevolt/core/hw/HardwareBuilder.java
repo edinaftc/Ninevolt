@@ -1,4 +1,4 @@
-package com.vvftc.ninevolt.core.hw;
+package com.edinaftc.ninevolt.core.hw;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;

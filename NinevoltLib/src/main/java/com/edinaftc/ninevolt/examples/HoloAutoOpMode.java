@@ -1,14 +1,13 @@
-package com.vvftc.ninevolt.examples;
+package com.edinaftc.ninevolt.examples;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.vvftc.ninevolt.core.hw.Hardware;
-import com.vvftc.ninevolt.core.hw.HardwareBuilder;
-import com.vvftc.ninevolt.core.hw.drivetrain.holonomic.Movement;
-import com.vvftc.ninevolt.util.ExceptionHandling;
+import com.edinaftc.ninevolt.core.hw.Hardware;
+import com.edinaftc.ninevolt.core.hw.HardwareBuilder;
+import com.edinaftc.ninevolt.core.hw.drivetrain.holonomic.Movement;
+import com.edinaftc.ninevolt.util.ExceptionHandling;
 
 /**
  * Created by Richik SC on 3/3/2017.

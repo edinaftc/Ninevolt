@@ -1,12 +1,12 @@
-package com.vvftc.ninevolt.core.hw.drivetrain.mecanum;
+package com.edinaftc.ninevolt.core.hw.drivetrain.mecanum;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
-import com.vvftc.ninevolt.core.hw.Hardware;
-import com.vvftc.ninevolt.core.hw.drivetrain.MovementBase;
-import com.vvftc.ninevolt.core.hw.sensors.PIDControl;
+import com.edinaftc.ninevolt.core.hw.Hardware;
+import com.edinaftc.ninevolt.core.hw.drivetrain.MovementBase;
+import com.edinaftc.ninevolt.core.hw.sensors.PIDControl;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
 

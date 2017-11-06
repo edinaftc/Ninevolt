@@ -1,4 +1,4 @@
-package com.vvftc;
+package com.edinaftc;
 
 public class Ninevolt {
 }

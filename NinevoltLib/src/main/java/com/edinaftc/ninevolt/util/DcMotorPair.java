@@ -1,4 +1,4 @@
-package com.vvftc.ninevolt.util;
+package com.edinaftc.ninevolt.util;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 

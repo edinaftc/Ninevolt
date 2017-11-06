@@ -1,10 +1,9 @@
-package com.vvftc.ninevolt.core.hw;
+package com.edinaftc.ninevolt.core.hw;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.vvftc.ninevolt.util.DcMotorPair;
+import com.edinaftc.ninevolt.util.DcMotorPair;
 
 /**
  * Created by VVMS FTC teams on 2/23/2017.
