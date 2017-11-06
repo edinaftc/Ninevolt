@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 25
@@ -27,6 +29,10 @@ android {
 
 }
 
+group = 'com.edinaftc.ftc'
+version = '0.1.0'
+def mArtifact = 'ninevolt'
+
 repositories {
     flatDir {
         dirs '../libs'
@@ -40,4 +46,64 @@ dependencies {
     compile(name: 'Analytics-release', ext: 'aar')
     compile(name: 'WirelessP2p-release', ext: 'aar')
     compile(name: 'Analytics-release', ext: 'aar')
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name 'Ninevolt'
+            description 'A utilities library for FTC'
+            url 'https://github.com/edinaftc/Ninevolt'
+            inceptionYear '2017'
+
+            packaging 'aar'
+            groupId project.group
+            artifactId mArtifact
+            version project.version
+            licenses {
+                license {
+                    name 'The MIT License (MIT)'
+                    url 'https://opensource.org/licenses/MIT'
+                }
+            }
+            scm {
+                connection 'https://github.com/edinaftc/Ninevolt.git'
+                url 'https://github.com/edinaftc/Ninevolt'
+
+            }
+            developers {
+                developer {
+                    id = 'richiksc'
+                    name 'Richik SC'
+                }
+                developer {
+                    id = 'NickDim'
+                    name 'Nick Dimitrov'
+                }
+            }
+        }
+    }
+}
+
+Properties bintrayProperties = new Properties()
+bintrayProperties.load(project.rootProject.file('bintray.properties').newDataInputStream())
+
+bintray {
+    user = bintrayProperties.getProperty('user')
+    key = bintrayProperties.get('key')
+    configurations = ['archives']
+    pkg {
+        repo = 'ftc'
+        name = mArtifact
+        userOrg = 'edinaftc'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/edinaftc/Ninevolt.git'
+        publish = true
+        version {
+            name = project.version
+            desc = 'Ninevolt FTC Library ' + project.version
+            released = new Date()
+            vcsTag = 'v' + project.version
+        }
+    }
 }
