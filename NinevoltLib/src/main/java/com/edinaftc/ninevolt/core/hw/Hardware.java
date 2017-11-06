@@ -6,7 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.edinaftc.ninevolt.util.DcMotorPair;
 
 /**
- * Created by VVMS FTC teams on 2/23/2017.
+ * A class to represent the hardware of your robot. Contains things such as
+ * motors and sensors.
  */
 
 public class Hardware {
@@ -41,6 +42,23 @@ public class Hardware {
   }
 
   public void init() throws Exception {
+    setDfZeroPowerBehavior(this.dfZeroPowerBehavior);
+    if (imu != null) {
+      if(imuParams != null) {
+        imu.initialize(imuParams);
+      } else {
+        throw new Exception("YOU SUCK! YOU DID NOT INCLUDE PARAMETERS! THIS SHOULD NOT HAPPEN " +
+            "UNLESS YOU ARE DOING THINGS MANUALLY WHICH YOU SHOULD NOT BE DOING ANYWAY! USE HB!");
+      }
+    }
+  }
+
+  /**
+   * Applies updated motor mode and direction to motors.
+   * @throws Exception Either <code>motorMode</code> or <code>motorDirection</code>
+   * is not defined.
+   */
+  public void updateMotorConfig() throws Exception {
     if (motorMode == MotorMode.HOLONOMIC) {
       if(motorDirection != null) {
         motorFL.setDirection(motorDirection);
@@ -95,28 +113,27 @@ public class Hardware {
     } else {
       throw new Exception("Must specify motor mode");
     }
-    if (motorFL != null) {
-      motorFL.setZeroPowerBehavior(dfZeroPowerBehavior);
-      motorFR.setZeroPowerBehavior(dfZeroPowerBehavior);
-    }
-    if (motorBL != null) {
-      motorBL.setZeroPowerBehavior(dfZeroPowerBehavior);
-      motorBR.setZeroPowerBehavior(dfZeroPowerBehavior);
-    }
-    if (imu != null) {
-      if(imuParams != null) {
-        imu.initialize(imuParams);
-      } else {
-        throw new Exception("YOU SUCK! YOU DID NOT INCLUDE PARAMETERS! THIS SHOULD NOT HAPPEN " +
-            "UNLESS YOU ARE DOING THINGS MANUALLY WHICH YOU SHOULD NOT BE DOING ANYWAY! USE HB!");
-      }
-    }
   }
 
+  /**
+   * Updates motor mode based on chassis type. Please note that it does not
+   * apply the updated value to the motors which requires calling the
+   * {@link #updateMotorConfig()} method.
+   * @param motorMode The chassis type, one of four: <code>TWO_MOTORS</code>,
+   *                  <code>FOUR_MOTORS</code>, <code>HOLONOMIC</code>,
+   *                  <code>MECANUM</code>
+   */
   public void setMotorMode(MotorMode motorMode) {
     this.motorMode = motorMode;
   }
 
+  /**
+   * Updates motor direction. Please note that it does not apply the updated
+   * value to the motors which requires calling the {@link #updateMotorConfig()}
+   * method.
+   * @param direction The chassis type, either <code>FORWARD</code>,
+   *                  <code>REVERSE</code>
+   */
   public void setMotorDirection(DcMotor.Direction direction) {
     this.motorDirection = direction;
   }
@@ -147,5 +164,13 @@ public class Hardware {
 
   public void setDfZeroPowerBehavior(DcMotor.ZeroPowerBehavior dfZeroPowerBehavior) {
     this.dfZeroPowerBehavior = dfZeroPowerBehavior;
+    if (motorFL != null) {
+      motorFL.setZeroPowerBehavior(dfZeroPowerBehavior);
+      motorFR.setZeroPowerBehavior(dfZeroPowerBehavior);
+    }
+    if (motorBL != null) {
+      motorBL.setZeroPowerBehavior(dfZeroPowerBehavior);
+      motorBR.setZeroPowerBehavior(dfZeroPowerBehavior);
+    }
   }
 }
