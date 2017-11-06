@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 import com.edinaftc.ninevolt.core.hw.Hardware;
 import com.edinaftc.ninevolt.core.hw.drivetrain.MovementBase;
 import com.edinaftc.ninevolt.core.hw.sensors.PIDControl;
+import com.edinaftc.ninevolt.util.Threshold;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
 
@@ -26,11 +27,6 @@ public class Movement implements MovementBase {
   private LinearOpMode ctxl;
   private Telemetry telemetry;
   private Hardware hardware;
-
-  private int newTargetFL;
-  private int newTargetFR;
-  private int newTargetBL;
-  private int newTargetBR;
 
   public Movement(Hardware hardware, OpMode opMode) {
     this.hardware = hardware;
@@ -99,12 +95,6 @@ public class Movement implements MovementBase {
     hardware.motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     ctxl.idle();
-
-    newTargetFL = 0;
-    newTargetFR = 0;
-    newTargetBL = 0;
-    newTargetBR = 0;
-
   }
 
   @Override
@@ -113,9 +103,9 @@ public class Movement implements MovementBase {
     if (ctxl.opModeIsActive()) {
       int ticks = calculateTargetTicks(dist);
       hardware.motorFL.setTargetPosition(ticks);
-      hardware.motorFR.setTargetPosition(-1 * ticks);
+      hardware.motorFR.setTargetPosition(ticks);
       hardware.motorBL.setTargetPosition(ticks);
-      hardware.motorBR.setTargetPosition(-1 * ticks);
+      hardware.motorBR.setTargetPosition(ticks);
 
       if (dist > 0)
         directDrive(0, 0.1f, 0);
@@ -133,17 +123,7 @@ public class Movement implements MovementBase {
             hardware.motorBL.getCurrentPosition(),
             hardware.motorBR.getCurrentPosition()
         );
-        if (isVerbose()) {
-          telemetry.addData("Path3", "Power at %.2f :%.2f :%.2f :%.2f",
-              hardware.motorFL.getPower(),
-              hardware.motorFR.getPower(),
-              hardware.motorBL.getPower(),
-              hardware.motorBR.getPower()
-          );
-        }
         telemetry.update();
-
-
       }
       setPowerZero();
       resetEncoders();
@@ -156,9 +136,9 @@ public class Movement implements MovementBase {
     if (ctxl.opModeIsActive()) {
       int ticks = calculateTargetTicks(dist);
       hardware.motorFL.setTargetPosition(ticks);
-      hardware.motorFR.setTargetPosition(ticks);
-      hardware.motorBR.setTargetPosition(-1 * ticks);
-      hardware.motorBR.setTargetPosition(-1 * ticks);
+      hardware.motorFR.setTargetPosition(-1 * ticks);
+      hardware.motorBL.setTargetPosition(-1 * ticks);
+      hardware.motorBR.setTargetPosition(ticks);
 
       if (dist > 0) {
         directDrive(0.1f, 0, 0);
@@ -178,17 +158,7 @@ public class Movement implements MovementBase {
             hardware.motorBR.getCurrentPosition(),
             hardware.motorBR.getCurrentPosition()
         );
-        if (isVerbose()) {
-          telemetry.addData("Path3", "Power at %.2f :%.2f :%.2f :%.2f",
-              hardware.motorFL.getPower(),
-              hardware.motorFR.getPower(),
-              hardware.motorBL.getPower(),
-              hardware.motorBR.getPower()
-          );
-        }
         telemetry.update();
-
-
       }
       setPowerZero();
       resetEncoders();
@@ -203,36 +173,32 @@ public class Movement implements MovementBase {
 
   @Override
   public void driveUsingRange(double threshold) throws Exception {
-    if (autoAllowed) {
-      hardware.motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-      hardware.motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-      hardware.motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-      hardware.motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    } else {
-      hardware.motorFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-      hardware.motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-      hardware.motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-      hardware.motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
+    setRunUsingEncoders(autoAllowed);
 
     double cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
     while (cmDist > threshold) {
-      directDrive(0.5f);
+      directDrive(0.5f, 0);
       cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
       wait(10);
     }
   }
 
-  public void setRunUsingEncoders() {
+  public void setRunUsingEncoders(boolean runUsingEncoder) {
     hardware.motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     hardware.motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     hardware.motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     hardware.motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-    hardware.motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    hardware.motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    hardware.motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    hardware.motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    if (runUsingEncoder) {
+      hardware.motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+      hardware.motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+      hardware.motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+      hardware.motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    } else {
+      hardware.motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+      hardware.motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+      hardware.motorFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+      hardware.motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
   }
 
   public void directDrive(float xVal, float yVal, float rotVal) {
@@ -252,7 +218,7 @@ public class Movement implements MovementBase {
     if (isVerbose()) {
       telemetry.addData("Wheel Value Key", "(Front Left, Front Right, Back Left, Back Right)");
       telemetry.addData("Wheel Values (theoretical)",
-          String.format(Locale.US, "(%d, %d, %d, %d)",
+          String.format(Locale.US, "(%.2d, %.2d, %.2d, %.2d)",
               (long) frontLeft,
               (long) frontRight,
               (long) backLeft,
@@ -283,39 +249,8 @@ public class Movement implements MovementBase {
     hardware.motorBR.setPower(backRight);
   }
 
-  public void directDrive(float yVal) {
-    // Holonomic formulas
-    float xVal = 0;
-    float rotVal = 0;
-
-    float frontLeft = -yVal - xVal - rotVal;
-    float frontRight = yVal - xVal - rotVal;
-    float backRight = yVal + xVal - rotVal;
-    float backLeft = -yVal + xVal - rotVal;
-
-    // Clip the right/left values so that the values never exceed +/- 1
-    frontRight = Range.clip(frontRight, -1, 1);
-    frontLeft = Range.clip(frontLeft, -1, 1);
-    backLeft = Range.clip(backLeft, -1, 1);
-    backRight = Range.clip(backRight, -1, 1);
-    if (isVerbose()) {
-      telemetry.addData("Wheel Value Key", "(Front Left, Front Right, Back Left, Back Right)");
-      telemetry.addData("Wheel Values (theoretical)",
-          String.format(Locale.US, "(%d, %d, %d, %d)",
-              (long) frontLeft,
-              (long) frontRight,
-              (long) backLeft,
-              (long) backRight
-          )
-      );
-      telemetry.update();
-    }
-
-    // Write the values to the motors
-    hardware.motorFL.setPower(frontLeft);
-    hardware.motorFR.setPower(frontRight);
-    hardware.motorBL.setPower(backLeft);
-    hardware.motorBR.setPower(backRight);
+  public void directDrive(float yVal, float rVal) {
+    directDrive(0, yVal, rVal);
   }
 
   @Override
