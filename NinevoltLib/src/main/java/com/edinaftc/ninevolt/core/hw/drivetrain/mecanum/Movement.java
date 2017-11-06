@@ -14,9 +14,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.*;
 import java.util.Locale;
 
 /**
- * Created by VVMS FTC teams on 2/23/2017.
+ * The mecanum Movement class contains movement methods for an mecanum-based
+ * drivetrain.
+ * @since 2017-02-23
+ * @deprecated Use
+ * {@link com.edinaftc.ninevolt.core.hw.drivetrain.MecanumMovement} instead
  */
 
+@Deprecated
 public class Movement implements MovementBase {
 
   private double ppi;
@@ -87,7 +92,6 @@ public class Movement implements MovementBase {
         ) {
       ctxl.sleep(500);
     }
-
 
     hardware.motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     hardware.motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -174,7 +178,6 @@ public class Movement implements MovementBase {
   @Override
   public void driveUsingRange(double threshold) throws Exception {
     setRunUsingEncoders(autoAllowed);
-
     double cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
     while (cmDist > threshold) {
       directDrive(0.5f, 0);

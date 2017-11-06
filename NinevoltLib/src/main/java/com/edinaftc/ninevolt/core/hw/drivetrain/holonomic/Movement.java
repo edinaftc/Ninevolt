@@ -14,9 +14,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.*;
 import java.util.Locale;
 
 /**
- * Created by VVMS FTC teams on 2/23/2017.
+ * The holonomic Movement class contains movement methods for an omni-swerve
+ * drivetrain.
+ * @since       2017-02-23
+ * @deprecated  Use
+ * {@link com.edinaftc.ninevolt.core.hw.drivetrain.HolonomicMovement} instead
  */
 
+@Deprecated
 public class Movement implements MovementBase {
 
   private double ppi;
