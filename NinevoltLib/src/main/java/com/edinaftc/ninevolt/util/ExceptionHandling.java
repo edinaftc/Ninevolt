@@ -2,20 +2,38 @@ package com.edinaftc.ninevolt.util;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * Created by Richik SC on 3/3/2017.
+ * A utility class for various exception handling methods for FTC
  */
 
 public class ExceptionHandling {
+
+  /**
+   * A standard exception handling method that stops the OpMode and logs the
+   * stack trace to telemetry.
+   * @param ex      The exception to handle
+   * @param opMode  The context OpMode that this is being called from, usually
+   *                <code>this</code>
+   */
   public static void standardExceptionHandling(Exception ex, OpMode opMode) {
-    opMode.stop();
-    StringWriter sw = new StringWriter();
-    PrintWriter pw = new PrintWriter(sw);
-    ex.printStackTrace(pw);
-    opMode.telemetry.addData("New " + ex.getClass().toString(), sw.toString());
-    opMode.telemetry.update();
+    try {
+      opMode.stop();
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      ex.printStackTrace(pw);
+      pw.close();
+      sw.close();
+      opMode.telemetry.addData("New " + ex.getClass().toString(), sw.toString());
+      opMode.telemetry.update();
+    } catch (IOException e) {
+      opMode.stop();
+      opMode.telemetry.addData("Ninevolt.ExceptionHandling Exception",
+          "IOException by StringWriter");
+      opMode.telemetry.update();
+    }
   }
 }

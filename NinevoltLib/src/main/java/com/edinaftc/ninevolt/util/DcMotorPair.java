@@ -3,7 +3,9 @@ package com.edinaftc.ninevolt.util;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
- * Created by Richik SC on 2/23/2017.
+ * A utility class to contain two <code>DcMotor</code>s and use them together.
+ * Contains most methods of <code>DcMotor</code>.
+ *
  */
 
 public class DcMotorPair {
