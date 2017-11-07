@@ -1,5 +1,6 @@
 package com.edinaftc.ninevolt.core.hw;
 
+import com.edinaftc.ninevolt.core.hw.drivetrain.WheelValues;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -171,6 +172,16 @@ public class Hardware {
     if (motorBL != null) {
       motorBL.setZeroPowerBehavior(dfZeroPowerBehavior);
       motorBR.setZeroPowerBehavior(dfZeroPowerBehavior);
+    }
+  }
+
+  public void setMotorPowers(WheelValues values) {
+    if (motorBL != null && motorBR != null &&
+        motorMode != MotorMode.TWO_MOTORS) {
+      motorFL.setPower(values.getFL());
+      motorFR.setPower(values.getFR());
+      motorBL.setPower(values.getBL());
+      motorBR.setPower(values.getBR());
     }
   }
 }
