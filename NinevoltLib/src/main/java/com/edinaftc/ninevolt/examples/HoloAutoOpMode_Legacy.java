@@ -10,8 +10,7 @@ import com.edinaftc.ninevolt.core.hw.drivetrain.holonomic.Movement;
 import com.edinaftc.ninevolt.util.ExceptionHandling;
 
 /**
- * Created by Richik SC on 3/3/2017.
- * Duplicate this file into teamcode to run.
+ * A sample OpMode using a holonomic chassis using deprecated code.
  */
 
 @Autonomous(name = "Holonomic Square", group = "Ninevolt Sample Autonomous")
