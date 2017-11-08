@@ -9,14 +9,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
 
 public abstract class Movement {
-  private double ppi;
+  protected double ppi;
 
-  private boolean isVerbose = false;
-  private boolean autoAllowed;
-  private OpMode ctx;
-  private LinearOpMode ctxl;
-  private Telemetry telemetry;
-  private Hardware hardware;
+  protected boolean isVerbose = false;
+  protected boolean autoAllowed;
+  protected OpMode ctx;
+  protected LinearOpMode ctxl;
+  protected Telemetry telemetry;
+  protected Hardware hardware;
 
   public Movement(Hardware hardware, OpMode opMode) {
     this.hardware = hardware;
@@ -37,6 +37,7 @@ public abstract class Movement {
   public abstract void directDrive(float xVal, float yVal, float rotVal);
   public abstract void setTargetX(int ticks);
   public abstract void setTargetY(int ticks);
+  public abstract void directTankDrive(float lVal, float rVal);
 
   public boolean isVerbose() {
     return isVerbose;
