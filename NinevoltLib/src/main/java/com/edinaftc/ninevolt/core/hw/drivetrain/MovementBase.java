@@ -4,6 +4,7 @@ package com.edinaftc.ninevolt.core.hw.drivetrain;
  * Created by Richik SC on 2/23/2017.
  */
 
+@Deprecated
 public interface MovementBase {
   void yDrive(double dist) throws Exception;
   void rotate(double angle) throws Exception;
