@@ -1,5 +1,6 @@
 # Ninevolt
 [ ![Download](https://api.bintray.com/packages/edinaftc/ftc/ninevolt/images/download.svg) ](https://bintray.com/edinaftc/ftc/ninevolt/_latestVersion)
+[![Build Status](https://travis-ci.org/edinaftc/Ninevolt.svg?branch=master)](https://travis-ci.org/edinaftc/Ninevolt)
 
 Ninevolt is an FTC utilities library that adds a layer on top of the FTC SDK to make it easier to program your robot by having reusable classes for common season-indepent code.
 
