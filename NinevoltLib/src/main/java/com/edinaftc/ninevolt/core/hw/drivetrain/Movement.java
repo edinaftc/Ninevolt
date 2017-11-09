@@ -2,6 +2,8 @@ package com.edinaftc.ninevolt.core.hw.drivetrain;
 
 import com.edinaftc.ninevolt.core.hw.Hardware;
 import com.edinaftc.ninevolt.core.hw.sensors.PIDControl;
+import com.edinaftc.ninevolt.util.Threshold;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -156,9 +158,20 @@ public abstract class Movement {
     }
   }
 
-  public void rotate(double angle) throws Exception {
-    telemetry.addData("Ninevolt.Movement", "Sorry, method `rotate` not supported yet");
-    telemetry.update();
+  public void rotate(double deltaAngle, double power) throws Exception {
+    double currentRotation = hardware.imu.getAngularOrientation().firstAngle;
+    double targetRotation = currentRotation + deltaAngle;
+    while (!Threshold.withinDeviation(currentRotation,
+            targetRotation, 0.5) && opModeIsActive()) {
+      if (deltaAngle > 0) {
+        directDrive(0, 0, (float) power);
+      } else if (deltaAngle < 0) {
+        directDrive(0, 0, (float) -power);
+      } else return;
+      currentRotation = hardware.imu.getAngularOrientation().firstAngle;
+    }
+    setPowerZero();
+
   }
 
   public void driveUsingRange(double threshold) throws Exception {
@@ -234,5 +247,10 @@ public abstract class Movement {
       directDrive(0, power, (float) output);
       ctxl.sleep(pid.K.getT());
     }
+  }
+
+  private boolean opModeIsActive() {
+    if (ctxl != null) return ctxl.opModeIsActive();
+    else return true;
   }
 }
