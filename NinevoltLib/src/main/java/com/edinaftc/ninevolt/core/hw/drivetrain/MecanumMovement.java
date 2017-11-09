@@ -62,11 +62,11 @@ public class MecanumMovement extends Movement {
     if (isVerbose()) {
       telemetry.addData("Wheel Value Key", "(Front Left, Front Right, Back Left, Back Right)");
       telemetry.addData("Wheel Values (theoretical)",
-          String.format(Locale.US, "(%.2d, %.2d, %.2d, %.2d)",
-              (long) values.getFL(),
-              (long) values.getFR(),
-              (long) values.getBL(),
-              (long) values.getBR()
+          String.format(Locale.US, "(%.2f, %.2f, %.2f, %.2f)",
+              values.getFL(),
+              values.getFR(),
+              values.getBL(),
+              values.getBR()
           )
       );
 

@@ -163,9 +163,9 @@ public abstract class Movement {
     double targetRotation = currentRotation + deltaAngle;
     while (!Threshold.withinDeviation(currentRotation,
             targetRotation, 0.5) && opModeIsActive()) {
-      if (deltaAngle > 0) {
+      if (deltaAngle > 0.0) {
         directDrive(0, 0, (float) power);
-      } else if (deltaAngle < 0) {
+      } else if (deltaAngle < 0.0) {
         directDrive(0, 0, (float) -power);
       } else return;
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
