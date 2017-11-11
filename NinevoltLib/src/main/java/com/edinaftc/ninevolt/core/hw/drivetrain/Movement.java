@@ -161,17 +161,28 @@ public abstract class Movement {
     }
   }
 
+  private double targetRotateLogic(double targetRotation) {
+    if (targetRotation < -180) {
+      return 180 - (targetRotation + 180);
+    } else if (targetRotation > 180) {
+      return -180 + (targetRotation - 180);
+    } else {
+      return targetRotation;
+    }
+  }
+
   public void rotate(double deltaAngle, double power) throws Exception {
     double currentRotation = hardware.imu.getAngularOrientation().firstAngle;
     double targetRotation = currentRotation - deltaAngle;
-    double proportion = 1;
+    targetRotation = targetRotateLogic(targetRotation);
+//    double proportion = 1;
     while (!Threshold.withinDeviation(currentRotation,
             targetRotation, rotationDeviation) && opModeIsActive()) {
-      double output = ((targetRotation - currentRotation) / Math.abs(deltaAngle)) * proportion;
+//      double output = ((targetRotation - currentRotation) / Math.abs(deltaAngle)) * proportion;
       if (deltaAngle > 0.0) {
-        directDrive(0, 0, (float) (power * output));
+        directDrive(0, 0, (float) (power /* * output*/));
       } else if (deltaAngle < 0.0) {
-        directDrive(0, 0, (float) (-power * output));
+        directDrive(0, 0, (float) (-power /* * output*/));
       } else return;
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
       telemetry.addData("currentRotation", currentRotation);
