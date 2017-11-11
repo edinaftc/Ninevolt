@@ -5,14 +5,14 @@ buildscript {
     }
     dependencies {
         //Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.10"
+//        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.10"
     }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.jfrog.artifactory'
+//apply plugin: 'com.jfrog.artifactory'
 
 android {
     compileSdkVersion 25
@@ -42,8 +42,7 @@ android {
 }
 
 group = 'com.edinaftc.ftc'
-version = '1.0.0-alpha-9'
-status = 'alpha'
+version = '1.0.1-alpha-2'
 def mArtifact = 'NinevoltLib'
 
 repositories {
@@ -125,7 +124,6 @@ bintray {
         vcsUrl = 'https://github.com/edinaftc/Ninevolt.git'
         issueTrackerUrl = 'https://github.com/edinaftc/Ninevolt/issues'
         githubRepo = 'edinaftc/Ninevolt'
-        publish = true
         version {
             name = project.version
             desc = 'Ninevolt FTC Library ' + project.version
@@ -135,6 +133,7 @@ bintray {
     }
 }
 
+/*
 configurations {
     published
 }
@@ -195,4 +194,4 @@ artifactory {
 
         }
     }
-}
+}*/
