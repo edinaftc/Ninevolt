@@ -98,11 +98,18 @@ install {
     }
 }
 
-Properties bintrayProperties = new Properties()
-bintrayProperties.load(project.rootProject.file('bintray.properties').newDataInputStream())
-
-def bintrayUser = System.getenv("BINTRAY_USER") ?: bintrayProperties.getProperty('user')
-def bintrayKey = System.getenv("BINTRAY_KEY") ?: bintrayProperties.get('key')
+def bintrayUser
+def bintrayKey
+def binPropsFile = project.rootProject.file('bintray.properties')
+if (binPropsFile.isFile()) {
+    Properties bintrayProperties = new Properties()
+    bintrayProperties.load(binPropsFile.newDataInputStream())
+    bintrayUser = bintrayProperties.getProperty('user')
+    bintrayKey = bintrayProperties.get('key')
+} else {
+    bintrayUser = System.getenv("BINTRAY_USER")
+    bintrayKey = System.getenv("BINTRAY_KEY")
+}
 
 bintray {
     user = bintrayUser
@@ -141,14 +148,24 @@ artifacts {
     published sourceJar
 }
 
-Properties artifactoryProperties = new Properties()
-artifactoryProperties.load(project.rootProject.file('artifactory.properties').newDataInputStream())
-
-def artifactoryUser = System.getenv("EDINAFTC_ARTIFACTORY_USER") ?: artifactoryProperties.getProperty('user')
-def artifactoryPass = System.getenv("EDINAFTC_ARTIFACTORY_KEY") ?: artifactoryProperties.getProperty('password')
+def artifactoryUser
+def artifactoryPass
+def artifactoryCtxUrl
+def artPropsFile = project.rootProject.file('artifactory.properties')
+if (artPropsFile.isFile()) {
+    Properties artifactoryProperties = new Properties()
+    artifactoryProperties.load(artPropsFile.newDataInputStream())
+    artifactoryUser = artifactoryProperties.getProperty('user')
+    artifactoryPass = artifactoryProperties.getProperty('password')
+    artifactoryCtxUrl = artifactoryProperties.getProperty('contextUrl')
+} else {
+    artifactoryUser = System.getenv("EDINAFTC_ARTIFACTORY_USER")
+    artifactoryPass = System.getenv("EDINAFTC_ARTIFACTORY_KEY")
+    artifactoryCtxUrl = System.getenv("EDINAFTC_ARTIFACTORY_URL")
+}
 
 artifactory {
-    contextUrl = artifactoryProperties.getProperty('contextUrl')   //The base Artifactory URL if not overridden by the publisher/resolver
+    contextUrl = artifactoryCtxUrl   //The base Artifactory URL if not overridden by the publisher/resolver
     publish {
         repository {
             repoKey = 'libs-snapshot-local'
