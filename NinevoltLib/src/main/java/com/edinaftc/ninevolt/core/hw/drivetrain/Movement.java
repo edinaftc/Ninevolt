@@ -164,12 +164,14 @@ public abstract class Movement {
   public void rotate(double deltaAngle, double power) throws Exception {
     double currentRotation = hardware.imu.getAngularOrientation().firstAngle;
     double targetRotation = currentRotation - deltaAngle;
+    PIDControl pid = new PIDControl(0.2, 50);
     while (!Threshold.withinDeviation(currentRotation,
             targetRotation, rotationDeviation) && opModeIsActive()) {
+      double output = pid.controlPI(targetRotation, currentRotation);
       if (deltaAngle > 0.0) {
-        directDrive(0, 0, (float) power);
+        directDrive(0, 0, (float) (power * output));
       } else if (deltaAngle < 0.0) {
-        directDrive(0, 0, (float) -power);
+        directDrive(0, 0, (float) (-power * output));
       } else return;
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
       telemetry.addData("currentRotation", currentRotation);
@@ -177,7 +179,7 @@ public abstract class Movement {
       telemetry.addData("withinDeviation", Threshold.withinDeviation(currentRotation,
           targetRotation, 0.5));
       telemetry.update();
-      if (ctxl != null) ctxl.idle();
+      if (ctxl != null) { ctxl.idle(); ctxl.sleep(pid.getK().getT()); }
     }
     setPowerZero();
 

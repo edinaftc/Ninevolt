@@ -42,7 +42,7 @@ android {
 }
 
 group = 'com.edinaftc.ftc'
-version = '1.0.1-alpha-17'
+version = '1.0.1-alpha-18'
 def mArtifact = 'NinevoltLib'
 
 repositories {
