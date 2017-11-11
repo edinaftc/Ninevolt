@@ -115,12 +115,16 @@ bintray {
     user = bintrayUser
     key = bintrayKey
     configurations = ['archives']
+    publish = true
     pkg {
         repo = 'ftc'
         name = mArtifact
         userOrg = 'edinaftc'
         licenses = ['MIT']
+        websiteUrl = 'https://github.com/edinaftc/Ninevolt'
         vcsUrl = 'https://github.com/edinaftc/Ninevolt.git'
+        issueTrackerUrl = 'https://github.com/edinaftc/Ninevolt/issues'
+        githubRepo = 'edinaftc/Ninevolt'
         publish = true
         version {
             name = project.version
