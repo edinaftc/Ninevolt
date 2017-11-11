@@ -19,12 +19,14 @@ public abstract class Movement {
   protected LinearOpMode ctxl;
   protected Telemetry telemetry;
   protected Hardware hardware;
+  protected double rotationDeviation;
 
   public Movement(Hardware hardware, OpMode opMode) {
     this.hardware = hardware;
     this.ctx = opMode;
     this.telemetry = ctx.telemetry;
     autoAllowed = false;
+    rotationDeviation = 0.25;
   }
 
   public Movement(Hardware hardware, LinearOpMode opMode, double ppi) {
@@ -34,6 +36,7 @@ public abstract class Movement {
     this.ctxl = opMode;
     this.ppi = ppi;
     autoAllowed = true;
+    rotationDeviation = 0.2;
   }
 
   public abstract void directDrive(float xVal, float yVal, float rotVal);
@@ -162,7 +165,7 @@ public abstract class Movement {
     double currentRotation = hardware.imu.getAngularOrientation().firstAngle;
     double targetRotation = currentRotation - deltaAngle;
     while (!Threshold.withinDeviation(currentRotation,
-            targetRotation, 0.25) && opModeIsActive()) {
+            targetRotation, rotationDeviation) && opModeIsActive()) {
       if (deltaAngle > 0.0) {
         directDrive(0, 0, (float) power);
       } else if (deltaAngle < 0.0) {
@@ -258,5 +261,13 @@ public abstract class Movement {
   private boolean opModeIsActive() {
     if (ctxl != null) return ctxl.opModeIsActive();
     else return true;
+  }
+
+  public double getRotationDeviation() {
+    return rotationDeviation;
+  }
+
+  public void setRotationDeviation(double rotationDeviation) {
+    this.rotationDeviation = rotationDeviation;
   }
 }
