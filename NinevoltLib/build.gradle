@@ -101,9 +101,12 @@ install {
 Properties bintrayProperties = new Properties()
 bintrayProperties.load(project.rootProject.file('bintray.properties').newDataInputStream())
 
+def bintrayUser = System.getenv("BINTRAY_USER") ?: bintrayProperties.getProperty('user')
+def bintrayKey = System.getenv("BINTRAY_KEY") ?: bintrayProperties.get('key')
+
 bintray {
-    user = bintrayProperties.getProperty('user')
-    key = bintrayProperties.get('key')
+    user = bintrayUser
+    key = bintrayKey
     configurations = ['archives']
     pkg {
         repo = 'ftc'
@@ -141,13 +144,16 @@ artifacts {
 Properties artifactoryProperties = new Properties()
 artifactoryProperties.load(project.rootProject.file('artifactory.properties').newDataInputStream())
 
+def artifactoryUser = System.getenv("EDINAFTC_ARTIFACTORY_USER") ?: artifactoryProperties.getProperty('user')
+def artifactoryPass = System.getenv("EDINAFTC_ARTIFACTORY_KEY") ?: artifactoryProperties.getProperty('password')
+
 artifactory {
     contextUrl = artifactoryProperties.getProperty('contextUrl')   //The base Artifactory URL if not overridden by the publisher/resolver
     publish {
         repository {
             repoKey = 'libs-snapshot-local'
-            username = artifactoryProperties.getProperty('user')
-            password = artifactoryProperties.getProperty('password')
+            username = artifactoryUser
+            password = artifactoryPass
             maven = true
 
         }
@@ -155,15 +161,15 @@ artifactory {
         defaults {
             publishConfigs('archives', 'published')
             properties = ['build.status': project.status.toString()]
-            publishPom = true //Publish generated POM files to Artifactory (true by default)
-            publishIvy = false //Publish generated Ivy descriptor files to Artifactory (true by default)
+            publishPom = true // Publish generated POM files to Artifactory (true by default)
+            publishIvy = false // Publish generated Ivy descriptor files to Artifactory (true by default)
         }
     }
     resolve {
         repository {
             repoKey = 'libs-snapshot'
-            username = artifactoryProperties.getProperty('user')
-            password = artifactoryProperties.getProperty('password')
+            username = artifactoryUser
+            password = artifactoryPass
             maven = true
 
         }
