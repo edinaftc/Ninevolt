@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         //Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.10"
     }
 }
 
@@ -42,7 +42,8 @@ android {
 }
 
 group = 'com.edinaftc.ftc'
-version = '1.0.0-alpha-8'
+version = '1.0.0-alpha-SNAPSHOT'
+status = 'SNAPSHOT'
 def mArtifact = 'NinevoltLib'
 
 repositories {
@@ -120,6 +121,23 @@ bintray {
     }
 }
 
+configurations {
+    published
+}
+
+task sourceJar(type: Jar) {
+    classifier "sources"
+    from 'src/main/java'
+}
+
+artifactoryPublish {
+    dependsOn sourceJar
+}
+
+artifacts {
+    published sourceJar
+}
+
 Properties artifactoryProperties = new Properties()
 artifactoryProperties.load(project.rootProject.file('artifactory.properties').newDataInputStream())
 
@@ -132,6 +150,13 @@ artifactory {
             password = artifactoryProperties.getProperty('password')
             maven = true
 
+        }
+
+        defaults {
+            publishConfigs('archives', 'published')
+            properties = ['build.status': project.status.toString()]
+            publishPom = true //Publish generated POM files to Artifactory (true by default)
+            publishIvy = false //Publish generated Ivy descriptor files to Artifactory (true by default)
         }
     }
     resolve {
