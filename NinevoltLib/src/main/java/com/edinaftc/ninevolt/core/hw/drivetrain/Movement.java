@@ -97,16 +97,16 @@ public abstract class Movement {
     directDrive(0, yVal, rVal);
   }
 
-  public void yDrive(double dist) throws Exception {
+  public void yDrive(double dist, float power) throws Exception {
     resetEncoders();
     if (ctxl.opModeIsActive()) {
       int ticks = calculateTargetTicks(dist);
       setTargetY(ticks);
 
       if (dist > 0)
-        directDrive(0, 0.1f, 0);
+        directDrive(0, power, 0);
       else
-        directDrive(0, -0.1f, 0);
+        directDrive(0, -power, 0);
       // keep looping while we are still active, and there is time left, and both motors are running.
       while (ctxl.opModeIsActive() &&
           (hardware.motorBL.isBusy() && hardware.motorFR.isBusy())) {
@@ -127,16 +127,16 @@ public abstract class Movement {
 
   }
 
-  public void xDrive(double dist) throws Exception {
+  public void xDrive(double dist, float power) throws Exception {
     resetEncoders();
     if (ctxl.opModeIsActive()) {
       int ticks = calculateTargetTicks(dist);
       setTargetX(ticks);
 
       if (dist > 0) {
-        directDrive(0.1f, 0, 0);
+        directDrive(power, 0, 0);
       } else {
-        directDrive(-0.1f, 0, 0);
+        directDrive(-power, 0, 0);
         telemetry.addData("Else Horizontal", "Negative");
       }
       // keep looping while we are still active, and there is time left, and both motors are running.
