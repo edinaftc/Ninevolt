@@ -42,8 +42,8 @@ android {
 }
 
 group = 'com.edinaftc.ftc'
-version = '1.0.0-alpha-SNAPSHOT'
-status = 'SNAPSHOT'
+version = '1.0.0-alpha-9'
+status = 'alpha'
 def mArtifact = 'NinevoltLib'
 
 repositories {
