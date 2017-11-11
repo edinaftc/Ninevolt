@@ -160,13 +160,13 @@ public abstract class Movement {
 
   public void rotate(double deltaAngle, double power) throws Exception {
     double currentRotation = hardware.imu.getAngularOrientation().firstAngle;
-    double targetRotation = currentRotation + deltaAngle;
+    double targetRotation = currentRotation - deltaAngle;
     while (!Threshold.withinDeviation(currentRotation,
-            targetRotation, 0.5) && opModeIsActive()) {
+            targetRotation, 0.25) && opModeIsActive()) {
       if (deltaAngle > 0.0) {
-        directDrive(0, 0, (float) -power);
-      } else if (deltaAngle < 0.0) {
         directDrive(0, 0, (float) power);
+      } else if (deltaAngle < 0.0) {
+        directDrive(0, 0, (float) -power);
       } else return;
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
       telemetry.addData("currentRotation", currentRotation);

@@ -42,7 +42,7 @@ android {
 }
 
 group = 'com.edinaftc.ftc'
-version = '1.0.1-alpha-14'
+version = '1.0.1-alpha-15'
 def mArtifact = 'NinevoltLib'
 
 repositories {
@@ -123,6 +123,7 @@ bintray {
         vcsUrl = 'https://github.com/edinaftc/Ninevolt.git'
         issueTrackerUrl = 'https://github.com/edinaftc/Ninevolt/issues'
         githubRepo = 'edinaftc/Ninevolt'
+        publish = true
         version {
             name = project.version
             desc = 'Ninevolt FTC Library ' + project.version
