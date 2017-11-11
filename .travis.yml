@@ -3,6 +3,6 @@ android:
   components:
     - build-tools-25.0.3
     - android-23
-branches:
-  only:
-    - master
+env:
+  BINTRAY_USER=edinaftctravis
+  EDINAFTC_ARTIFACTORY_USER=travis
