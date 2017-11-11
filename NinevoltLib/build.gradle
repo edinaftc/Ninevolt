@@ -114,7 +114,6 @@ bintray {
     user = bintrayUser
     key = bintrayKey
     configurations = ['archives']
-    publish = true
     pkg {
         repo = 'ftc'
         name = mArtifact
