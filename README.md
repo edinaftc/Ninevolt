@@ -10,15 +10,6 @@ Ninevolt is an FTC utilities library that adds a layer on top of the FTC SDK to 
 ## Installing
 Ninevolt can be added super easily to your existing FTC project:
 
-`build.common.gradle`:
-
-```gradle
-repositories {
-    ...
-    maven { url 'http://dl.bintray.com/edinaftc/ftc/' }
-}
-```
-
 `TeamCode/build.gradle`:
 
 ```gradle
