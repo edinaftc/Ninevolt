@@ -169,6 +169,12 @@ public abstract class Movement {
         directDrive(0, 0, (float) -power);
       } else return;
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
+      telemetry.addData("currentRotation", currentRotation);
+      telemetry.addData("targetRotation", targetRotation);
+      telemetry.addData("withinDeviation", Threshold.withinDeviation(currentRotation,
+          targetRotation, 0.5));
+      telemetry.update();
+      if (ctxl != null) ctxl.idle();
     }
     setPowerZero();
 
