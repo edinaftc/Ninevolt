@@ -176,9 +176,8 @@ public abstract class Movement {
     double targetRotation = currentRotation - deltaAngle;
     targetRotation = targetRotateLogic(targetRotation);
 //    double proportion = 1;
-    while (!Threshold.withinDeviation(currentRotation,
-            targetRotation, rotationDeviation) && opModeIsActive()) {
-//      double output = ((targetRotation - currentRotation) / Math.abs(deltaAngle)) * proportion;
+    while (!rotateCondition(targetRotation, currentRotation, (deltaAngle < 0.0)) && opModeIsActive()) {
+//      double output = ((targetRotation - currentRotation) / Math.abs(deltaAngle)); // * proportion;
       if (deltaAngle > 0.0) {
         directDrive(0, 0, (float) (power /* * output*/));
       } else if (deltaAngle < 0.0) {
@@ -194,6 +193,11 @@ public abstract class Movement {
     }
     setPowerZero();
 
+  }
+
+  private boolean rotateCondition(double targetRotation, double currentRotation, boolean counterClockwise) {
+    if (counterClockwise) return (currentRotation >= targetRotation);
+    else return (currentRotation <= targetRotation);
   }
 
   public void driveUsingRange(double threshold) throws Exception {
