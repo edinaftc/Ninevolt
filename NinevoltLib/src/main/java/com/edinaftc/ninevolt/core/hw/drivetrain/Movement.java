@@ -1,5 +1,7 @@
 package com.edinaftc.ninevolt.core.hw.drivetrain;
 
+import com.edinaftc.ninevolt.Config;
+import com.edinaftc.ninevolt.Ninevolt;
 import com.edinaftc.ninevolt.core.hw.Hardware;
 import com.edinaftc.ninevolt.core.hw.sensors.PIDControl;
 import com.edinaftc.ninevolt.util.Threshold;
@@ -11,6 +13,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
 
 public abstract class Movement {
+  protected Config config = Ninevolt.getInstance().getConfig();
+
   protected double ppi;
 
   protected boolean isVerbose = false;
@@ -45,11 +49,16 @@ public abstract class Movement {
   public abstract void directTankDrive(float lVal, float rVal);
 
   public boolean isVerbose() {
-    return isVerbose;
+    return config.getLoggingLevel() == Config.LoggingLevel.VERBOSE;
   }
 
+  @Deprecated
   public void setVerbose(boolean verbose) {
-    isVerbose = verbose;
+    if (verbose) {
+      config.setLoggingLevel(Config.LoggingLevel.VERBOSE);
+    } else {
+      config.setLoggingLevel(Config.LoggingLevel.RECOMMENDED);
+    }
   }
 
   private void checkAuto() throws Exception {
