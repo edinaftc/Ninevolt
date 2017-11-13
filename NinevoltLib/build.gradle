@@ -5,14 +5,14 @@ buildscript {
     }
     dependencies {
         //Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
-//        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.10"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.10"
     }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-//apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'com.jfrog.artifactory'
 
 android {
     compileSdkVersion 25
@@ -42,7 +42,7 @@ android {
 }
 
 group = 'com.edinaftc.ftc'
-version = '1.0.1-alpha-21'
+version = '1.0.1-alpha-SNAPSHOT'
 def mArtifact = 'NinevoltLib'
 
 repositories {
@@ -133,7 +133,6 @@ bintray {
     }
 }
 
-/*
 configurations {
     published
 }
@@ -141,10 +140,6 @@ configurations {
 task sourceJar(type: Jar) {
     classifier "sources"
     from 'src/main/java'
-}
-
-artifactoryPublish {
-    dependsOn sourceJar
 }
 
 artifacts {
@@ -194,4 +189,8 @@ artifactory {
 
         }
     }
-}*/
+}
+
+artifactoryPublish {
+    dependsOn sourceJar
+}
