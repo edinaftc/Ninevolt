@@ -163,15 +163,17 @@ public abstract class Movement {
       while (ctxl.opModeIsActive() &&
           (hardware.motorBL.isBusy() && hardware.motorFR.isBusy())) {
 
-        // Display it for the driver.
-        telemetry.addData(TAG + "yDrive:Target", "Running to %7d", ticks);
-        telemetry.addData(TAG + "yDrive:Current", "Running at %7d :%7d :%7d :%7d",
-            hardware.motorFL.getCurrentPosition(),
-            hardware.motorFR.getCurrentPosition(),
-            hardware.motorBL.getCurrentPosition(),
-            hardware.motorBR.getCurrentPosition()
-        );
-        telemetry.update();
+        if (isVerbose()) {
+          // Display it for the driver.
+          telemetry.addData(TAG + "yDrive:Target", "Running to %7d", ticks);
+          telemetry.addData(TAG + "yDrive:Current", "Running at %7d :%7d :%7d :%7d",
+              hardware.motorFL.getCurrentPosition(),
+              hardware.motorFR.getCurrentPosition(),
+              hardware.motorBL.getCurrentPosition(),
+              hardware.motorBR.getCurrentPosition()
+          );
+          telemetry.update();
+        }
       }
       setPowerZero();
       resetEncoders();
@@ -201,16 +203,17 @@ public abstract class Movement {
       // keep looping while we are still active, and there is time left, and both motors are running.
       while (ctxl.opModeIsActive() &&
           (hardware.motorBR.isBusy() && hardware.motorFR.isBusy())) {
-
-        // Display it for the driver.
-        telemetry.addData(TAG + "xDrive:Target", "Running to %7d", ticks);
-        telemetry.addData(TAG + "xDrive:Current", "Running at %7d :%7d :%7d :%7d",
-            hardware.motorFL.getCurrentPosition(),
-            hardware.motorFR.getCurrentPosition(),
-            hardware.motorBR.getCurrentPosition(),
-            hardware.motorBR.getCurrentPosition()
-        );
-        telemetry.update();
+        if (isVerbose()) {
+          // Display it for the driver.
+          telemetry.addData(TAG + "xDrive:Target", "Running to %7d", ticks);
+          telemetry.addData(TAG + "xDrive:Current", "Running at %7d :%7d :%7d :%7d",
+              hardware.motorFL.getCurrentPosition(),
+              hardware.motorFR.getCurrentPosition(),
+              hardware.motorBR.getCurrentPosition(),
+              hardware.motorBR.getCurrentPosition()
+          );
+          telemetry.update();
+        }
       }
       setPowerZero();
       resetEncoders();
@@ -275,6 +278,10 @@ public abstract class Movement {
     while (cmDist > threshold && opModeIsActive()) {
       directDrive(0.5f, 0);
       cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
+      if (isVerbose()) {
+        telemetry.addData(TAG + "driveUsingRange:Current Distance", cmDist);
+        telemetry.update();
+      }
       if (ctxl != null) { ctxl.idle(); }
     }
     setPowerZero();
@@ -315,8 +322,10 @@ public abstract class Movement {
 
     while (ctxl.getRuntime() < startTime + duration && ctxl.opModeIsActive()) {
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
-      telemetry.addData("currRotation", currentRotation);
-      telemetry.update();
+      if (isVerbose()) {
+        telemetry.addData(TAG + "driveUsingGyro:currRotation", currentRotation);
+        telemetry.update();
+      }
       output = pid.controlPI(targetRotation, currentRotation);
       directDrive(0, power, (float) output);
       ctxl.sleep(pid.K.getT());
@@ -334,8 +343,10 @@ public abstract class Movement {
 
     while (ctxl.getRuntime() < startTime + duration && ctxl.opModeIsActive()) {
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
-      telemetry.addData("currRotation", currentRotation);
-      telemetry.update();
+      if (isVerbose()) {
+        telemetry.addData(TAG + "driveUsingGyro:currRotation", currentRotation);
+        telemetry.update();
+      }
       if (currentRotation < (targetRotation + 1) || currentRotation > (targetRotation - 1)) {
         break;
       }
@@ -348,13 +359,5 @@ public abstract class Movement {
   private boolean opModeIsActive() {
     if (ctxl != null) return ctxl.opModeIsActive();
     else return true;
-  }
-
-  public double getRotationDeviation() {
-    return rotationDeviation;
-  }
-
-  public void setRotationDeviation(double rotationDeviation) {
-    this.rotationDeviation = rotationDeviation;
   }
 }

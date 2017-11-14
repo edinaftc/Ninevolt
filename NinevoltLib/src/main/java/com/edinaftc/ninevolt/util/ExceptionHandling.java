@@ -1,5 +1,7 @@
 package com.edinaftc.ninevolt.util;
 
+import com.edinaftc.ninevolt.Config;
+import com.edinaftc.ninevolt.Ninevolt;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import java.io.IOException;
@@ -22,13 +24,15 @@ public class ExceptionHandling {
   public static void standardExceptionHandling(Exception ex, OpMode opMode) {
     try {
       opMode.stop();
-      StringWriter sw = new StringWriter();
-      PrintWriter pw = new PrintWriter(sw);
-      ex.printStackTrace(pw);
-      pw.close();
-      sw.close();
-      opMode.telemetry.addData("New " + ex.getClass().toString(), sw.toString());
-      opMode.telemetry.update();
+      if (Ninevolt.getConfig().minLoggingLevel(Config.LoggingLevel.RECOMMENDED)) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        ex.printStackTrace(pw);
+        pw.close();
+        sw.close();
+        opMode.telemetry.addData("New " + ex.getClass().toString(), sw.toString());
+        opMode.telemetry.update();
+      }
     } catch (IOException e) {
       opMode.stop();
       opMode.telemetry.addData("Ninevolt.ExceptionHandling Exception",
