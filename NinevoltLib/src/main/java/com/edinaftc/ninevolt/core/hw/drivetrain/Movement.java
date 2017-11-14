@@ -5,7 +5,6 @@ import com.edinaftc.ninevolt.Ninevolt;
 import com.edinaftc.ninevolt.core.hw.Hardware;
 import com.edinaftc.ninevolt.core.hw.sensors.PIDControl;
 import com.edinaftc.ninevolt.util.Threshold;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,11 +12,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
 
 public abstract class Movement {
-  protected Config config = Ninevolt.getInstance().getConfig();
+  protected Config config = Ninevolt.getConfig();
 
   protected double ppi;
 
-  protected boolean isVerbose = false;
   protected boolean autoAllowed;
   protected OpMode ctx;
   protected LinearOpMode ctxl;
@@ -49,7 +47,7 @@ public abstract class Movement {
   public abstract void directTankDrive(float lVal, float rVal);
 
   public boolean isVerbose() {
-    return config.getLoggingLevel() == Config.LoggingLevel.VERBOSE;
+    return config.minLoggingLevel(Config.LoggingLevel.VERBOSE);
   }
 
   @Deprecated

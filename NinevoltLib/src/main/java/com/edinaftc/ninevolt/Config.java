@@ -1,8 +1,19 @@
 package com.edinaftc.ninevolt;
 
+import android.util.Log;
+
 public class Config {
   public enum LoggingLevel {
-    SILENT, RECOMMENDED, VERBOSE
+    SILENT(0), RECOMMENDED(5), VERBOSE(10);
+
+    private final int level;
+    LoggingLevel(int levelNum) {
+      this.level = levelNum;
+    }
+
+    public int getLevel() {
+      return level;
+    }
   }
 
   private LoggingLevel loggingLevel;
@@ -13,6 +24,10 @@ public class Config {
 
   public LoggingLevel getLoggingLevel() {
     return loggingLevel;
+  }
+
+  public boolean minLoggingLevel(LoggingLevel minimum) {
+    return loggingLevel.getLevel() >= minimum.getLevel();
   }
 
   public void setLoggingLevel(LoggingLevel loggingLevel) {
