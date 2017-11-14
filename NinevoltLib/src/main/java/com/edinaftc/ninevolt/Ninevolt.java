@@ -1,18 +1,13 @@
 package com.edinaftc.ninevolt;
 
 public class Ninevolt {
-  private static Ninevolt instance;
-  public static Ninevolt getInstance() {
-    return instance;
+  private static Config config;
+
+  public static void setConfig(Config config) {
+    Ninevolt.config = config;
   }
 
-  private Config config;
-
-  public void setConfig(Config config) {
-    this.config = config;
-  }
-
-  public Config getConfig() {
+  public static Config getConfig() {
     return config;
   }
 }
