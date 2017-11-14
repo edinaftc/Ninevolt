@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
 
 public abstract class Movement {
+  private static final String TAG = "ninevolt.Movement.";
   protected Config config = Ninevolt.getConfig();
 
   protected double ppi;
@@ -163,8 +164,8 @@ public abstract class Movement {
           (hardware.motorBL.isBusy() && hardware.motorFR.isBusy())) {
 
         // Display it for the driver.
-        telemetry.addData("Path1", "Running to %7d", ticks);
-        telemetry.addData("Path2", "Running at %7d :%7d :%7d :%7d",
+        telemetry.addData(TAG + "yDrive:Target", "Running to %7d", ticks);
+        telemetry.addData(TAG + "yDrive:Current", "Running at %7d :%7d :%7d :%7d",
             hardware.motorFL.getCurrentPosition(),
             hardware.motorFR.getCurrentPosition(),
             hardware.motorBL.getCurrentPosition(),
@@ -196,15 +197,14 @@ public abstract class Movement {
         directDrive(power, 0, 0);
       } else {
         directDrive(-power, 0, 0);
-        telemetry.addData("Else Horizontal", "Negative");
       }
       // keep looping while we are still active, and there is time left, and both motors are running.
       while (ctxl.opModeIsActive() &&
           (hardware.motorBR.isBusy() && hardware.motorFR.isBusy())) {
 
         // Display it for the driver.
-        telemetry.addData("Path1", "Running to %7d", ticks);
-        telemetry.addData("Path2", "Running at %7d :%7d :%7d :%7d",
+        telemetry.addData(TAG + "xDrive:Target", "Running to %7d", ticks);
+        telemetry.addData(TAG + "xDrive:Current", "Running at %7d :%7d :%7d :%7d",
             hardware.motorFL.getCurrentPosition(),
             hardware.motorFR.getCurrentPosition(),
             hardware.motorBR.getCurrentPosition(),
@@ -247,10 +247,9 @@ public abstract class Movement {
       } else return;
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
       if (isVerbose()) {
-        telemetry.addData("Movement.rotate:currentRotation", currentRotation);
-        telemetry.addData("Movement.rotate:targetRotation", targetRotation);
-        telemetry.addData("Movement.rotate:conditionPassed", Threshold.withinDeviation(currentRotation,
-            targetRotation, 0.5));
+        telemetry.addData(TAG + "rotate:currentRotation", currentRotation);
+        telemetry.addData(TAG + "rotate:targetRotation", targetRotation);
+        telemetry.addData(TAG + "rotate:conditionPassed", rotateCondition(targetRotation, currentRotation, (deltaAngle < 0.0)));
         telemetry.update();
       }
       if (ctxl != null) { ctxl.idle(); }
