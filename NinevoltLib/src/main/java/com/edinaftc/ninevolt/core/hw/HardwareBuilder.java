@@ -1,6 +1,7 @@
 package com.edinaftc.ninevolt.core.hw;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -53,6 +54,11 @@ public class HardwareBuilder {
   public HardwareBuilder addBoschIMU(String hwMapName, BNO055IMU.Parameters parameters) {
     building.setImu(hardwareMap.get(BNO055IMU.class, hwMapName));
     building.setImuParams(parameters);
+    return this;
+  }
+
+  public HardwareBuilder addMRRangeSensor(String hwMapName) {
+    building.setRangeSensor(hardwareMap.get(ModernRoboticsI2cRangeSensor.class, hwMapName));
     return this;
   }
 

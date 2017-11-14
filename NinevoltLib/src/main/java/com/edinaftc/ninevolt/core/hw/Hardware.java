@@ -159,6 +159,10 @@ public class Hardware {
     this.imu = imu;
   }
 
+  public void setRangeSensor(ModernRoboticsI2cRangeSensor rangeSensor) {
+    this.rangeSensor = rangeSensor;
+  }
+
   public void setImuParams(BNO055IMU.Parameters imuParams) {
     this.imuParams = imuParams;
   }
