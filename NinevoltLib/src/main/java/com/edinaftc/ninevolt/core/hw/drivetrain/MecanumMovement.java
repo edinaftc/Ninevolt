@@ -91,7 +91,7 @@ public class MecanumMovement extends Movement {
   }
 
   @Override
-  public void setTargetX(int ticks) {
+  protected void setTargetX(int ticks) {
     hardware.motorFL.setTargetPosition(ticks);
     hardware.motorFR.setTargetPosition(-1 * ticks);
     hardware.motorBL.setTargetPosition(-1 * ticks);
@@ -99,7 +99,7 @@ public class MecanumMovement extends Movement {
   }
 
   @Override
-  public void setTargetY(int ticks) {
+  protected void setTargetY(int ticks) {
     hardware.motorFL.setTargetPosition(ticks);
     hardware.motorFR.setTargetPosition(ticks);
     hardware.motorBL.setTargetPosition(ticks);

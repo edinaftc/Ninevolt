@@ -41,15 +41,35 @@ public abstract class Movement {
     rotationDeviation = 0.2;
   }
 
+  /**
+   * Directly drive the robot with power values.
+   * @param xVal Power in the left and right direction. Positive is to the right.
+   *             Only supported by holonomic and mecanum drivetrains.
+   * @param yVal Power in the forward and backward direction. Positive is forward.
+   * @param rotVal Rotating value. Positive is clockwise.
+   */
   public abstract void directDrive(float xVal, float yVal, float rotVal);
-  public abstract void setTargetX(int ticks);
-  public abstract void setTargetY(int ticks);
+
+  /**
+   * Directly drive the robot using tank drive control.
+   * @param lVal Power of the left wheels. Positive is forward.
+   * @param rVal Power to the right wheels. Positive is also forward.
+   */
   public abstract void directTankDrive(float lVal, float rVal);
+
+  protected abstract void setTargetX(int ticks);
+  protected abstract void setTargetY(int ticks);
 
   public boolean isVerbose() {
     return config.minLoggingLevel(Config.LoggingLevel.VERBOSE);
   }
 
+  /**
+   * Sets the logging output level to 'verbose' or 'recommended'.
+   * @deprecated Use {@link Config#setLoggingLevel(Config.LoggingLevel)} instead.
+   * @param verbose Whether everything should be logged.
+   * @see Config#setLoggingLevel(Config.LoggingLevel)
+   */
   @Deprecated
   public void setVerbose(boolean verbose) {
     if (verbose) {
@@ -70,13 +90,21 @@ public abstract class Movement {
     return (int) Math.round(targetInches * ppi);
   }
 
-  private void setPowerZero() {
+  /**
+   * Stops all motors.
+   */
+  public void setPowerZero() {
     hardware.motorFL.setPower(0);
     hardware.motorFR.setPower(0);
     hardware.motorBL.setPower(0);
     hardware.motorBR.setPower(0);
   }
 
+  /**
+   * Resets all encoders to zero and then switches them back to <code>RUN_TO_POSITION</code>
+   * @throws Exception You are not using Movement with a <code>LinearOpMode</code>
+   *                   or have not provided an encoder pulses per inch.
+   */
   public void resetEncoders() throws Exception {
     checkAuto();
     hardware.motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -103,10 +131,23 @@ public abstract class Movement {
     ctxl.idle();
   }
 
+  /**
+   * Directly drive the robot with power values
+   * @param yVal Power in the forward and backward direction. Positive is forward.
+   * @param rVal Power in the rotation direction. Positive is clockwise
+   */
   public void directDrive(float yVal, float rVal) {
     directDrive(0, yVal, rVal);
   }
 
+  /**
+   * Drive the robot in the <i>y</i> direction using encoders for a set distance
+   * at a set power.
+   * @param dist The distance in inches that the robot should drive. Positive is forward.
+   * @param power The power that it should drive at.
+   * @throws Exception You are not using a <code>LinearOpMode</code> or have not
+   *                   provided an encoder pulses per inch.
+   */
   public void yDrive(double dist, float power) throws Exception {
     resetEncoders();
     if (ctxl.opModeIsActive()) {
@@ -137,6 +178,14 @@ public abstract class Movement {
 
   }
 
+  /**
+   * Drive the robot in the <i>x</i> direction using encoders for a set distance
+   * at a set power.
+   * @param dist The distance in inches that the robot should drive. Positive is to the right.
+   * @param power The power that it should drive at.
+   * @throws Exception You are not using a <code>LinearOpMode</code> or have not
+   *                   provided an encoder pulses per inch.
+   */
   public void xDrive(double dist, float power) throws Exception {
     resetEncoders();
     if (ctxl.opModeIsActive()) {
@@ -178,7 +227,13 @@ public abstract class Movement {
     }
   }
 
-  public void rotate(double deltaAngle, double power) throws Exception {
+  /**
+   * Rotate the robot by a provided angle.
+   * @param deltaAngle The difference in angle it should rotate in degrees.
+   *                   Positive is clockwise.
+   * @param power The power it should rotate at.
+   */
+  public void rotate(double deltaAngle, double power) {
     double currentRotation = hardware.imu.getAngularOrientation().firstAngle;
     double targetRotation = currentRotation - deltaAngle;
     targetRotation = targetRotateLogic(targetRotation);
@@ -191,11 +246,13 @@ public abstract class Movement {
         directDrive(0, 0, (float) (-power /* * output*/));
       } else return;
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
-      telemetry.addData("currentRotation", currentRotation);
-      telemetry.addData("targetRotation", targetRotation);
-      telemetry.addData("withinDeviation", Threshold.withinDeviation(currentRotation,
-          targetRotation, 0.5));
-      telemetry.update();
+      if (isVerbose()) {
+        telemetry.addData("Movement.rotate:currentRotation", currentRotation);
+        telemetry.addData("Movement.rotate:targetRotation", targetRotation);
+        telemetry.addData("Movement.rotate:conditionPassed", Threshold.withinDeviation(currentRotation,
+            targetRotation, 0.5));
+        telemetry.update();
+      }
       if (ctxl != null) { ctxl.idle(); }
     }
     setPowerZero();
@@ -207,14 +264,21 @@ public abstract class Movement {
     else return (currentRotation <= targetRotation);
   }
 
+  /**
+   * Drive until the range sensor is within certain distance of an object.
+   * @param threshold The distance in centimeters from the object when it should stop.
+   * @throws Exception No range sensor was provided.
+   */
   public void driveUsingRange(double threshold) throws Exception {
+    if (hardware.rangeSensor == null) { throw new Exception("No range sensor was provided!"); }
     setRunUsingEncoders(autoAllowed);
     double cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
-    while (cmDist > threshold) {
+    while (cmDist > threshold && opModeIsActive()) {
       directDrive(0.5f, 0);
       cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
-      wait(10);
+      if (ctxl != null) { ctxl.idle(); }
     }
+    setPowerZero();
   }
 
   public void setRunUsingEncoders(boolean runUsingEncoder) {
