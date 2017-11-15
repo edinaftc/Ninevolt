@@ -22,4 +22,4 @@ dependencies {
 Simply `import` any of Ninevolt's classes and start using it!
 A sample autonomous OpMode using an omni-swerve chassis is available in [`HoloAutoOpMode.java`](src/main/java/com/edinaftc/ninevolt/examples/HoloAutoOpMode.java).
 
-A full javadoc is available here: [https://edinaftc.github.io/Ninevolt](https://edinaftc.github.io/Ninevolt)
+A full Javadoc is available here: [https://edinaftc.github.io/Ninevolt/javadoc](https://edinaftc.github.io/Ninevolt/javadoc)
