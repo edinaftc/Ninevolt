@@ -6,10 +6,12 @@ android:
 env: BINTRAY_USER=edinaftctravis EDINAFTC_ARTIFACTORY_USER=travis
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache/"
 notifications:
   slack:
     secure: fNCxdQC0QmGxn1w/C+ltlMPSORHQirurboKQ1HB258Ady5C9Ty7GHuBeb2P8G1SKWM4jHt+Wa2sN8jSPDZZj+0Eo7WExij1pwXRp/7npUKaIW6GMDwHWOerKLumbVn//kzLVhEUo5U0FP2Io25qQjt1X6p3j6QbCizrIMMvu+D6WluQ/QpLJkZuqlRZhed8SfiCuiV+dJazuY+h+cVaSAiid5FLchfZ8wx/mGhIM/jRC4qR3G4MHmCr0i+XSQ3bLk7b0SBq7OcuwkpAI3t0p+H1vP05klzKOEOC3ls7QXW6kSQj+sGS2ShzRw38WlQhMkolSuOrKZhWiDHLYQG+QW9Wt/NFHS3vz/zTmZwFm3ICwVXPk4pkjDygA4b4j3fr/p8Jh35V9Pmy78sBVFTnyg3Ipmus/LwO//gs8aqICvZ4T0EL+stv/rgZygqr2j4HVywJeW5WJ4ccxUIPGAVUnTXdMPPhzPWsO6R76IK7dRsE//ouaQbHxHOGSUygXCrkVEo9JcPlDi8NEZbWLVhslFzhH1avY8+TWBdFDdAkRZ/oBtqzIVws5rlf+3WUlnyVmuwRtYGC00WxHaqqG+DBzHKo32O64Y4n+WOXgtYvhRT3nejC+snR00SL8thq2wMCaSH0upOxbk4iTzcX6qkfoTaaOXeAktbxphTsxMnjvBP4=
