@@ -35,7 +35,7 @@ public class MecanumMovement extends Movement {
 
     // Mecanum formulas
     values.setFL(yVal + xVal + rotVal);
-    values.setFR(yVal - xVal - rotVal);
+    values.setFR(yVal - (1.2f * xVal) - rotVal);
     values.setBR(yVal + xVal - rotVal);
     values.setBL(yVal - xVal + rotVal);
 
