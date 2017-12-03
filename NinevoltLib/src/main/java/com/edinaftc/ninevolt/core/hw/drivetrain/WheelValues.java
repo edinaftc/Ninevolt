@@ -70,4 +70,12 @@ public class WheelValues {
     float maxR = Math.max(bl, br);
     return Math.max(maxL, maxR);
   }
+
+  @Override
+  public String toString() {
+    return  "FL=" + fl +
+            "Fr=" + fr +
+            "Bl=" + bl +
+            "Br=" + br;
+  }
 }
