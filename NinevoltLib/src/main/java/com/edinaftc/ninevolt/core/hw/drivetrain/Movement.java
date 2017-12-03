@@ -4,7 +4,6 @@ import com.edinaftc.ninevolt.Config;
 import com.edinaftc.ninevolt.Ninevolt;
 import com.edinaftc.ninevolt.core.hw.Hardware;
 import com.edinaftc.ninevolt.core.hw.sensors.PIDControl;
-import com.edinaftc.ninevolt.util.Threshold;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -23,6 +22,8 @@ public abstract class Movement {
   protected Telemetry telemetry;
   protected Hardware hardware;
   protected double rotationDeviation;
+
+  protected boolean defaultRunUsingEncoders;
 
   public Movement(Hardware hardware, OpMode opMode) {
     this.hardware = hardware;
@@ -60,6 +61,15 @@ public abstract class Movement {
 
   protected abstract void setTargetX(int ticks);
   protected abstract void setTargetY(int ticks);
+
+  public void setDefaultRunUsingEncoders(boolean defaultRunUsingEncoders) {
+    this.defaultRunUsingEncoders = defaultRunUsingEncoders;
+    setRunUsingEncoders(defaultRunUsingEncoders);
+  }
+
+  public boolean isDefaultRunUsingEncoders() {
+    return defaultRunUsingEncoders;
+  }
 
   public boolean isVerbose() {
     return config.minLoggingLevel(Config.LoggingLevel.VERBOSE);
@@ -237,16 +247,15 @@ public abstract class Movement {
    * @param power The power it should rotate at.
    */
   public void rotate(double deltaAngle, double power) {
+    setRunUsingEncoders(defaultRunUsingEncoders);
     double currentRotation = hardware.imu.getAngularOrientation().firstAngle;
     double targetRotation = currentRotation - deltaAngle;
     targetRotation = targetRotateLogic(targetRotation);
-//    double proportion = 1;
     while (!rotateCondition(targetRotation, currentRotation, (deltaAngle < 0.0)) && opModeIsActive()) {
-//      double output = ((targetRotation - currentRotation) / Math.abs(deltaAngle)); // * proportion;
       if (deltaAngle > 0.0) {
-        directDrive(0, 0, (float) (power /* * output*/));
+        directDrive(0, 0, (float) (power));
       } else if (deltaAngle < 0.0) {
-        directDrive(0, 0, (float) (-power /* * output*/));
+        directDrive(0, 0, (float) (-power));
       } else return;
       currentRotation = hardware.imu.getAngularOrientation().firstAngle;
       if (isVerbose()) {
@@ -258,7 +267,6 @@ public abstract class Movement {
       if (ctxl != null) { ctxl.idle(); }
     }
     setPowerZero();
-
   }
 
   private boolean rotateCondition(double targetRotation, double currentRotation, boolean counterClockwise) {
