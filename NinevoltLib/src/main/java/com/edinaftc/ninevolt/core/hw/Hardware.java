@@ -1,10 +1,9 @@
 package com.edinaftc.ninevolt.core.hw;
-
 import com.edinaftc.ninevolt.core.hw.drivetrain.WheelValues;
+import com.edinaftc.ninevolt.util.DcMotorPair;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.edinaftc.ninevolt.util.DcMotorPair;
 
 /**
  * A class to represent the hardware of your robot. Contains things such as
