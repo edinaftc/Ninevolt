@@ -20,7 +20,7 @@ notifications:
     on_failure: change
 deploy:
   - provider: script
-    script: publish/deploy.sh
+    script: .travis/ci-deploy.sh
     skip_cleanup: true
     on:
       repo: edinaftc/Ninevolt
@@ -29,6 +29,12 @@ deploy:
     api_key:
       secure: t8SC+tflniXSJ2pt988ct0RvUDGKAjkUkCV8tl5ii5nC5tejtu+ho/kSl5XMltTC39D9WyO3+6pdeJ2K+h/q24nhO5WrL2FInVl3el3df50wPLIDsJIJMGENCMu7uagwy4vaDTLG6/fHA1XNL+epnzwrzy+iQFU/FtPlzEKp7NLNPe0VxsAGz4dzApgmOcbGNu4pqVm+cRrFPiKEy6QytEKC3n0pyULjKqdMp8luudLQsweFmb3mLbwkIm/SFAys4aHRrINS4NIh2dva0mpjr3KyH59VP0uodzrequfH0WYYB9IVqrLEQy4JJSINZQExBJcwO5OYqfuNL2zPr+WQPiA5XuBDSE8imk6xHK6p59oQx0T2bsGp8m/cUZ/l2xAWTS0LFWovuWUh7S7YWgncfQkpGh3240A020TBvP0fZcwYvmViGCwuTY2bjjEnxjBSTZ2oXkWzOi4ITFLE6COLufghP905nKVnpE2fIZjLGneC5BUajaYPcjmBAojfoUs76THVFKyh4DASGmVBK0tXk/LNJumFcEo4mtHYc994nWR5FVGu8tAj0Q4nTRDwgk/8bd5NtE1yV68+0vKMuFL0iRms8ypR+I7Rou8HyUxqC5f+XubTrs1MG+PuLIRSgEQ+CiHOQVaunGSzuV/cDDgI10DK1kN6sBqves3D/7gTBNU=
     file: NinevoltLib/build/outputs/aar/NinevoltLib-release.aar
+    skip_cleanup: true
     on:
       repo: edinaftc/Ninevolt
       tags: true
+  - provider: script
+    script: .travis/auto-javadoc.sh
+    on:
+      repo: edinaftc/Ninevolt
+      all_branches: true
