@@ -1,3 +1,4 @@
 FtcRobotController/ merge=theirs
 libs/ merge=theirs
 gradle/wrapper/gradle-wrapper.properties merge=ours
+.github/ merge=ours
