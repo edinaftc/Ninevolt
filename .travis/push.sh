@@ -7,12 +7,12 @@ setup_git() {
 
 commit_javadoc_files() {
   git add docs/javadoc/
-  git commit -m "Travis CI auto-generated javadoc on build $TRAVIS_BUILD_NUMBER" -m "<https://travis-ci.org/edinaftc/Ninevolt/$TRAVIS_BUILD_ID>"
+  git commit -m "Travis CI auto-generated javadoc on build ${TRAVIS_BUILD_NUMBER}" -m "<https://travis-ci.org/edinaftc/Ninevolt/${TRAVIS_BUILD_ID}>"
 }
 
 upload_files() {
   git remote add origin-pages https://${GITHUB_TOKEN}@github.com/edinaftc/Ninevolt.git # > /dev/null 2>&1
-  git push --set-upstream origin-pages $TRAVIS_BRANCH
+  git push --set-upstream origin-pages ${TRAVIS_BRANCH}
 }
 
 setup_git
