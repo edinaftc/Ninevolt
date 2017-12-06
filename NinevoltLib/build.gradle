@@ -133,6 +133,12 @@ bintray {
     }
 }
 
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    destinationDir = file('../docs/javadoc')
+    exclude 'com/edinaftc/ninevolt/examples/**/*'
+}
+
 configurations {
     published
 }
