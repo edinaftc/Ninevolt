@@ -1,7 +1,5 @@
 package com.edinaftc.ninevolt;
 
-import android.util.Log;
-
 public class Config {
   public enum LoggingLevel {
     SILENT(0), RECOMMENDED(5), VERBOSE(10);
