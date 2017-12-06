@@ -32,11 +32,6 @@ public class Hardware {
   public BNO055IMU imu;
   public BNO055IMU.Parameters imuParams;
 
-  // Lot to do, decide, getters and setters or public members (usually bad practice but used by
-  // HW PushBot FTC sample class)
-
-  // TODO: Write hardware class
-
   public Hardware() {
     dfZeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE;
   }

@@ -11,8 +11,8 @@ commit_javadoc_files() {
 }
 
 upload_files() {
-  git remote add origin-pages https://${GITHUB_TOKEN}@github.com/edinaftc/Ninevolt.git > /dev/null 2>&1
-  git push --quiet --set-upstream origin-pages $TRAVIS_BRANCH
+  git remote add origin-pages https://${GITHUB_TOKEN}@github.com/edinaftc/Ninevolt.git # > /dev/null 2>&1
+  git push --set-upstream origin-pages $TRAVIS_BRANCH
 }
 
 setup_git
