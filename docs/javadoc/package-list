@@ -5,5 +5,4 @@ com.edinaftc.ninevolt.core.hw.drivetrain.holonomic
 com.edinaftc.ninevolt.core.hw.drivetrain.mecanum
 com.edinaftc.ninevolt.core.hw.drivetrain.standard
 com.edinaftc.ninevolt.core.hw.sensors
-com.edinaftc.ninevolt.examples
 com.edinaftc.ninevolt.util
