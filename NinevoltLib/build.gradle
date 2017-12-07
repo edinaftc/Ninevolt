@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         jcenter()
-
     }
     dependencies {
         //Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
@@ -133,10 +132,37 @@ bintray {
     }
 }
 
+ext.getDocDir = { ->
+    try {
+        def branchout = new ByteArrayOutputStream()
+        def travisBranch = System.getenv('TRAVIS_BRANCH')
+        exec {
+            commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
+            standardOutput = branchout
+        }
+        def branch = branchout.toString().trim();
+        if (branch.equals('master') || travisBranch.equals('master') || branch == null) {
+            return ''
+        } else {
+            return (travisBranch ?: branch) + '/'
+        }
+    } catch (ignored) {
+        return null
+    }
+}
+
 task javadoc(type: Javadoc) {
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    android.libraryVariants.all { variant ->
+        if (variant.name == 'release') {
+            owner.classpath += variant.javaCompiler.classpath
+        }
+    }
     source = android.sourceSets.main.java.srcDirs
-    destinationDir = file('../docs/javadoc')
     exclude 'com/edinaftc/ninevolt/examples/**/*'
+    exclude '**/BuildConfig.java'
+    exclude '**/R.java'
+    destinationDir = file('../docs/' + getDocDir() + 'javadoc')
 }
 
 configurations {

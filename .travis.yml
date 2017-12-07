@@ -4,6 +4,8 @@ android:
   - build-tools-25.0.3
   - android-23
 env: BINTRAY_USER=edinaftctravis EDINAFTC_ARTIFACTORY_USER=travis
+after_success:
+  "./gradlew :NinevoltLib:javadoc"
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -33,8 +35,10 @@ deploy:
     on:
       repo: edinaftc/Ninevolt
       tags: true
-  - provider: script
-    script: .travis/auto-javadoc.sh
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    local_dir: docs/
+    name: Travis CI
     on:
-      repo: edinaftc/Ninevolt
       all_branches: true
