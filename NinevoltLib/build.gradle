@@ -86,11 +86,11 @@ install {
 }
 
 Properties bintrayProperties = new Properties()
-bintrayProperties.load(project.rootProject.file('bintray.properties').newDataInputStream())
+bintrayProperties.load(project.rootProject.file('specific.properties').newDataInputStream())
 
 bintray {
-    user = bintrayProperties.getProperty('user')
-    key = bintrayProperties.get('key')
+    user = bintrayProperties.getProperty('bintray_user')
+    key = bintrayProperties.get('bintray_key')
     configurations = ['archives']
     pkg {
         repo = 'ftc'
