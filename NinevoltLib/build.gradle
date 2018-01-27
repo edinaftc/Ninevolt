@@ -96,22 +96,12 @@ install {
     }
 }
 
-def bintrayUser
-def bintrayKey
-def binPropsFile = project.rootProject.file('bintray.properties')
-if (binPropsFile.isFile()) {
-    Properties bintrayProperties = new Properties()
-    bintrayProperties.load(binPropsFile.newDataInputStream())
-    bintrayUser = bintrayProperties.getProperty('user')
-    bintrayKey = bintrayProperties.get('key')
-} else {
-    bintrayUser = System.getenv("BINTRAY_USER")
-    bintrayKey = System.getenv("BINTRAY_KEY")
-}
+Properties bintrayProperties = new Properties()
+bintrayProperties.load(project.rootProject.file('specific.properties').newDataInputStream())
 
 bintray {
-    user = bintrayUser
-    key = bintrayKey
+    user = bintrayProperties.getProperty('bintray_user')
+    key = bintrayProperties.get('bintray_key')
     configurations = ['archives']
     pkg {
         repo = 'ftc'

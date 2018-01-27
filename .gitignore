@@ -29,6 +29,6 @@ build/
 # Bintray authorization
 bintray.properties
 artifactory.properties
-
+specific.properties
 # Git for Windows
 bash.exe.stackdump
