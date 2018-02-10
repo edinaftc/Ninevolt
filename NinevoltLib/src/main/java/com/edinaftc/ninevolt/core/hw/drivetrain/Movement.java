@@ -184,6 +184,7 @@ public abstract class Movement {
           );
           telemetry.update();
         }
+        ctxl.idle();
       }
       setPowerZero();
       resetEncoders();
@@ -224,6 +225,7 @@ public abstract class Movement {
           );
           telemetry.update();
         }
+        ctxl.idle();
       }
       setPowerZero();
       resetEncoders();
