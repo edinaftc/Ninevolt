@@ -7,6 +7,7 @@ import com.edinaftc.ninevolt.core.hw.sensors.PIDControl;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
 
@@ -24,6 +25,8 @@ public abstract class Movement {
   protected double rotationDeviation;
 
   protected boolean defaultRunUsingEncoders;
+
+  private ElapsedTime elapsedTime = new ElapsedTime();
 
   public Movement(Hardware hardware, OpMode opMode) {
     this.hardware = hardware;
@@ -164,6 +167,7 @@ public abstract class Movement {
     if (ctxl.opModeIsActive()) {
       int ticks = calculateTargetTicks(dist);
       setTargetY(ticks);
+      elapsedTime.reset();
 
       if (dist > 0)
         directDrive(0, power, 0);
@@ -171,7 +175,8 @@ public abstract class Movement {
         directDrive(0, -power, 0);
       // keep looping while we are still active, and there is time left, and both motors are running.
       while (ctxl.opModeIsActive() &&
-          (hardware.motorBL.isBusy() && hardware.motorFR.isBusy())) {
+          (hardware.motorBL.isBusy() || hardware.motorFR.isBusy()) &&
+          (elapsedTime.seconds() < 3)) {
 
         if (isVerbose()) {
           // Display it for the driver.
@@ -205,6 +210,7 @@ public abstract class Movement {
     if (ctxl.opModeIsActive()) {
       int ticks = calculateTargetTicks(dist);
       setTargetX(ticks);
+      elapsedTime.reset();
 
       if (dist > 0) {
         directDrive(power, 0, 0);
@@ -213,7 +219,11 @@ public abstract class Movement {
       }
       // keep looping while we are still active, and there is time left, and both motors are running.
       while (ctxl.opModeIsActive() &&
-          (hardware.motorBR.isBusy() && hardware.motorFR.isBusy())) {
+              (hardware.motorBR.isBusy() ||
+              hardware.motorFL.isBusy() ||
+              hardware.motorFR.isBusy() ||
+              hardware.motorBL.isBusy()) &&
+          (elapsedTime.seconds() < 3)) {
         if (isVerbose()) {
           // Display it for the driver.
           telemetry.addData(TAG + "xDrive:Target", "Running to %7d", ticks);
