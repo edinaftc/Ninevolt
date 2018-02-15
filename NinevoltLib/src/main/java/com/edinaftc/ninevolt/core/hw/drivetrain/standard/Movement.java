@@ -16,9 +16,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 /**
- * Created by VVMS FTC teams on 2/23/2017.
+ * The standard Movement class contains movement methods for a standard wheeled
+ * drivetrain.
+ * @since       2018-02-15
+ * @deprecated  Use
+ * {@link com.edinaftc.ninevolt.core.hw.drivetrain.StandardMovement4} instead
  */
 
+@Deprecated
 public class Movement implements MovementBase {
 
   private double ppi;
