@@ -108,8 +108,8 @@ public class HolonomicMovement extends Movement {
 
   @Override
   public void directTankDrive(float lVal, float rVal) {
-    hardware.motorFL.setPower(Range.clip(lVal, -1, 1));
-    hardware.motorBL.setPower(Range.clip(lVal, -1, 1));
+    hardware.motorFL.setPower(Range.clip(-lVal, -1, 1));
+    hardware.motorBL.setPower(Range.clip(-lVal, -1, 1));
     hardware.motorFR.setPower(Range.clip(rVal, -1, 1));
     hardware.motorBR.setPower(Range.clip(rVal, -1, 1));
   }
