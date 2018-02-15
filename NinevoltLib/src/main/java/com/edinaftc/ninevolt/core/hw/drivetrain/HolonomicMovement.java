@@ -8,6 +8,12 @@ import com.qualcomm.robotcore.util.Range;
 
 import java.util.Locale;
 
+/**
+ * The HolonomicMovement class contains movement methods for an omni-swerve
+ * drivetrain.
+ * @since       2018-02-15
+ */
+
 public class HolonomicMovement extends Movement {
 
   private WheelValues values;

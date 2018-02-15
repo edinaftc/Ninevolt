@@ -8,6 +8,12 @@ import com.qualcomm.robotcore.util.Range;
 
 import java.util.Locale;
 
+/**
+ * The StandardMovement class contains movement methods for a standard wheeled
+ * drivetrain.
+ * @since       2018-02-15
+ */
+
 public class StandardMovement extends Movement {
 
   private WheelValues values;

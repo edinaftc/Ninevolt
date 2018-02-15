@@ -8,6 +8,12 @@ import com.qualcomm.robotcore.util.Range;
 
 import java.util.Locale;
 
+/**
+ * The MecanumMovement class contains movement methods for an omni-swerve
+ * drivetrain.
+ * @since       2017-11-06
+ */
+
 public class MecanumMovement extends Movement {
 
   private WheelValues values;
