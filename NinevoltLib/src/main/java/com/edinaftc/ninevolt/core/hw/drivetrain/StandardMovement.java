@@ -8,24 +8,32 @@ import com.qualcomm.robotcore.util.Range;
 
 import java.util.Locale;
 
-public class StandardMovement4 extends Movement {
+public class StandardMovement extends Movement {
 
   private WheelValues values;
   private WheelValues valuesAbs;
 
-  public StandardMovement4(Hardware hardware, OpMode opMode) throws Exception {
+  public StandardMovement(Hardware hardware, OpMode opMode, Hardware.MotorMode motorCount) throws Exception {
     super(hardware, opMode);
+    if (motorCount != Hardware.MotorMode.FOUR_MOTORS &&
+        motorCount != Hardware.MotorMode.TWO_MOTORS) {
+      throw new Exception("Use MotorMode TWO_ or FOUR_MOTORS with StandardMovement!");
+    }
     values = new WheelValues();
     valuesAbs = new WheelValues();
-    hardware.setMotorMode(Hardware.MotorMode.FOUR_MOTORS);
+    hardware.setMotorMode(motorCount);
     hardware.updateMotorConfig();
   }
 
-  public StandardMovement4(Hardware hardware, LinearOpMode opMode, double ppi) throws Exception {
+  public StandardMovement(Hardware hardware, LinearOpMode opMode, Hardware.MotorMode motorCount, double ppi) throws Exception {
     super(hardware, opMode, ppi);
+    if (motorCount != Hardware.MotorMode.FOUR_MOTORS &&
+        motorCount != Hardware.MotorMode.TWO_MOTORS) {
+      throw new Exception("Use MotorMode TWO_ or FOUR_MOTORS with StandardMovement!");
+    }
     values = new WheelValues();
     valuesAbs = new WheelValues();
-    hardware.setMotorMode(Hardware.MotorMode.FOUR_MOTORS);
+    hardware.setMotorMode(motorCount);
     hardware.updateMotorConfig();
   }
 
@@ -36,8 +44,6 @@ public class StandardMovement4 extends Movement {
     // Mecanum formulas
     values.setFL(yVal + rotVal);
     values.setFR(yVal - rotVal);
-    values.setBR(yVal - rotVal);
-    values.setBL(yVal + rotVal);
 
     /*  Clip the right/left values so that the values never exceed +/- 1, but
         keeping proportions */
@@ -60,26 +66,20 @@ public class StandardMovement4 extends Movement {
 
     // Show power information to user
     if (isVerbose()) {
-      telemetry.addData("Wheel Value Key", "(Front Left, Front Right, Back Left, Back Right)");
+      telemetry.addData("Wheel Value Key", "(Left, Right)");
       telemetry.addData("Wheel Values (theoretical)",
           String.format(Locale.US, "(%.2f, %.2f, %.2f, %.2f)",
               values.getFL(),
-              values.getFR(),
-              values.getBL(),
-              values.getBR()
+              values.getFR()
           )
       );
 
       if(hardware.motorFL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
-          hardware.motorFR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
-          hardware.motorBL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
-          hardware.motorBR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER) {
+          hardware.motorFR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER) {
         telemetry.addData("Wheel TPS",
             String.format(Locale.US, "(%d, %d, %d, %d)",
                 (long) (hardware.motorFL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
-                (long) (hardware.motorFR.getCurrentPosition() / (ctx.getRuntime() - startTime)),
-                (long) (hardware.motorBL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
-                (long) (hardware.motorBR.getCurrentPosition() / (ctx.getRuntime() - startTime))
+                (long) (hardware.motorFR.getCurrentPosition() / (ctx.getRuntime() - startTime))
             )
         );
       }
@@ -87,30 +87,25 @@ public class StandardMovement4 extends Movement {
     }
 
     // Write the values to the motors
-    hardware.setMotorPowers(values);
+    hardware.motorL.setPower(values.getFL());
+    hardware.motorR.setPower(values.getFR());
   }
 
   @Override
   protected void setTargetX(int ticks) {
-    hardware.motorFL.setTargetPosition(0);
-    hardware.motorFR.setTargetPosition(0);
-    hardware.motorBL.setTargetPosition(0);
-    hardware.motorBR.setTargetPosition(0);
+    hardware.motorL.setTargetPosition(0);
+    hardware.motorR.setTargetPosition(0);
   }
 
   @Override
   protected void setTargetY(int ticks) {
-    hardware.motorFL.setTargetPosition(ticks);
-    hardware.motorFR.setTargetPosition(ticks);
-    hardware.motorBL.setTargetPosition(ticks);
-    hardware.motorBR.setTargetPosition(ticks);
+    hardware.motorL.setTargetPosition(ticks);
+    hardware.motorR.setTargetPosition(ticks);
   }
 
   @Override
   public void directTankDrive(float lVal, float rVal) {
-    hardware.motorFL.setPower(Range.clip(lVal, -1, 1));
-    hardware.motorBL.setPower(Range.clip(lVal, -1, 1));
-    hardware.motorFR.setPower(Range.clip(rVal, -1, 1));
-    hardware.motorBR.setPower(Range.clip(rVal, -1, 1));
+    hardware.motorL.setPower(Range.clip(lVal, -1, 1));
+    hardware.motorR.setPower(Range.clip(rVal, -1, 1));
   }
 }

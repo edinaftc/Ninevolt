@@ -1,5 +1,6 @@
 package com.edinaftc.ninevolt.core.hw.drivetrain.standard;
 
+import com.edinaftc.ninevolt.core.hw.drivetrain.StandardMovement;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,7 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * drivetrain.
  * @since       2018-02-15
  * @deprecated  Use
- * {@link com.edinaftc.ninevolt.core.hw.drivetrain.StandardMovement4} instead
+ * {@link StandardMovement} instead
  */
 
 @Deprecated
