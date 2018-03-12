@@ -1,5 +1,8 @@
 package com.edinaftc.ninevolt.core.hw.drivetrain;
 
+import android.app.Activity;
+import android.widget.TextView;
+import com.edinaftc.ninevolt.BuildConfig;
 import com.edinaftc.ninevolt.Config;
 import com.edinaftc.ninevolt.Ninevolt;
 import com.edinaftc.ninevolt.core.hw.Hardware;
@@ -34,6 +37,7 @@ public abstract class Movement {
     this.telemetry = ctx.telemetry;
     autoAllowed = false;
     rotationDeviation = 0.25;
+    addVersionCode();
   }
 
   public Movement(Hardware hardware, LinearOpMode opMode, double ppi) {
@@ -44,6 +48,7 @@ public abstract class Movement {
     this.ppi = ppi;
     autoAllowed = true;
     rotationDeviation = 0.2;
+    addVersionCode();
   }
 
   /**
@@ -379,5 +384,13 @@ public abstract class Movement {
   private boolean opModeIsActive() {
     if (ctxl != null) return ctxl.opModeIsActive();
     else return true;
+  }
+
+  private void addVersionCode() {
+    int textId = ctx.hardwareMap.appContext.getResources()
+        .getIdentifier("textDeviceName", "id",
+            ctx.hardwareMap.appContext.getPackageName());
+    TextView txt = ((TextView) ((Activity) ctx.hardwareMap.appContext).findViewById(textId));
+    txt.setText(String.format("%s (Ninevolt %s)", txt.getText(), BuildConfig.VERSION_NAME));
   }
 }
