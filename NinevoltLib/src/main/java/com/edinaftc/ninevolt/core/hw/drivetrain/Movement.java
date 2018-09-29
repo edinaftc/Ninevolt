@@ -22,7 +22,6 @@ public abstract class Movement {
 
   protected double ppi;
 
-  protected boolean autoAllowed;
   protected OpMode ctx;
   protected LinearOpMode ctxl;
   protected Telemetry telemetry;
@@ -37,23 +36,22 @@ public abstract class Movement {
   protected WheelValues valuesAbs;
 
   public Movement(Hardware hardware, OpMode opMode) {
-    this(hardware, opMode, false, 0.25);
+    this(hardware, opMode, 0.25);
   }
 
   public Movement(Hardware hardware, LinearOpMode opMode, double ppi) {
-    this(hardware, opMode, true, 0.2);
+    this(hardware, (OpMode) opMode, 0.2);
     this.ctxl = opMode;
     this.ppi = ppi;
   }
 
-  private Movement(Hardware hardware, OpMode opMode, boolean autoAllowed, double rotationDeviation) {
+  private Movement(Hardware hardware, OpMode opMode, double rotationDeviation) {
     this.hardware = hardware;
     this.ctx = opMode;
     this.telemetry = ctx.telemetry;
     this.values = new WheelValues();
     this.valuesAbs = new WheelValues();
     Ninevolt.addVersionCode(ctx);
-    this.autoAllowed = autoAllowed;
     this.rotationDeviation = rotationDeviation;
   }
 
@@ -160,8 +158,12 @@ public abstract class Movement {
     }
   }
 
+  private boolean isAutoAllowed() {
+    return (ctxl != null) && (ppi != 0);
+  }
+
   private void checkAuto() throws Exception {
-    if (!autoAllowed) {
+    if (!isAutoAllowed()) {
       throw new Exception(
           "You must use a LinearOpMode and provide a PPI to be able to use encoders with Ninevolt");
     }
@@ -360,7 +362,7 @@ public abstract class Movement {
    */
   public void driveUsingRange(double threshold) throws Exception {
     if (hardware.rangeSensor == null) { throw new Exception("No range sensor was provided!"); }
-    setRunUsingEncoders(autoAllowed);
+    setRunUsingEncoders(isAutoAllowed());
     double cmDist = hardware.rangeSensor.getDistance(DistanceUnit.CM);
     while (cmDist > threshold && opModeIsActive()) {
       directDrive(0.5f, 0);
