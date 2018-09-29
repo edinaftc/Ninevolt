@@ -34,19 +34,19 @@ public class HardwareBuilder {
     return this;
   }
 
-  public HardwareBuilder addMotorFL(String hwMapName) throws Exception {
+  public HardwareBuilder addMotorFL(String hwMapName) {
     building.setMotorFL(hardwareMap.dcMotor.get(hwMapName));
     return this;
   }
-  public HardwareBuilder addMotorFR(String hwMapName) throws Exception {
+  public HardwareBuilder addMotorFR(String hwMapName) {
     building.setMotorFR(hardwareMap.dcMotor.get(hwMapName));
     return this;
   }
-  public HardwareBuilder addMotorBL(String hwMapName) throws Exception {
+  public HardwareBuilder addMotorBL(String hwMapName) {
     building.setMotorBL(hardwareMap.dcMotor.get(hwMapName));
     return this;
   }
-  public HardwareBuilder addMotorBR(String hwMapName) throws Exception {
+  public HardwareBuilder addMotorBR(String hwMapName) {
     building.setMotorBR(hardwareMap.dcMotor.get(hwMapName));
     return this;
   }

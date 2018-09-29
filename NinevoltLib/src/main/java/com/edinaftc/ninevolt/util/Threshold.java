@@ -54,7 +54,6 @@ public class Threshold {
   }
 
   public static boolean withinDeviation(double value, double target, double deviation) {
-    if (value > target - deviation && value < target + deviation) return true;
-    else return false;
+    return value > target - deviation && value < target + deviation;
   }
 }
