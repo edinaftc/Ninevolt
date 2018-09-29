@@ -16,17 +16,12 @@ import java.util.Locale;
 
 public class StandardMovement extends Movement {
 
-  private WheelValues values;
-  private WheelValues valuesAbs;
-
   public StandardMovement(Hardware hardware, OpMode opMode, Hardware.MotorMode motorCount) throws Exception {
     super(hardware, opMode);
     if (motorCount != Hardware.MotorMode.FOUR_MOTORS &&
         motorCount != Hardware.MotorMode.TWO_MOTORS) {
       throw new Exception("Use MotorMode TWO_ or FOUR_MOTORS with StandardMovement!");
     }
-    values = new WheelValues();
-    valuesAbs = new WheelValues();
     hardware.setMotorMode(motorCount);
     hardware.updateMotorConfig();
   }
@@ -37,8 +32,6 @@ public class StandardMovement extends Movement {
         motorCount != Hardware.MotorMode.TWO_MOTORS) {
       throw new Exception("Use MotorMode TWO_ or FOUR_MOTORS with StandardMovement!");
     }
-    values = new WheelValues();
-    valuesAbs = new WheelValues();
     hardware.setMotorMode(motorCount);
     hardware.updateMotorConfig();
   }

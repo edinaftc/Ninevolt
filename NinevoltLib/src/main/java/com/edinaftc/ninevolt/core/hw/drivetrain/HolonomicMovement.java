@@ -16,21 +16,14 @@ import java.util.Locale;
 
 public class HolonomicMovement extends Movement {
 
-  private WheelValues values;
-  private WheelValues valuesAbs;
-
   public HolonomicMovement(Hardware hardware, OpMode opMode) throws Exception {
     super(hardware, opMode);
-    values = new WheelValues();
-    valuesAbs = new WheelValues();
     hardware.setMotorMode(Hardware.MotorMode.HOLONOMIC);
     hardware.updateMotorConfig();
   }
 
   public HolonomicMovement(Hardware hardware, LinearOpMode opMode, double ppi) throws Exception {
     super(hardware, opMode, ppi);
-    values = new WheelValues();
-    valuesAbs = new WheelValues();
     hardware.setMotorMode(Hardware.MotorMode.HOLONOMIC);
     hardware.updateMotorConfig();
   }

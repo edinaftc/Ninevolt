@@ -16,21 +16,14 @@ import java.util.Locale;
 
 public class MecanumMovement extends Movement {
 
-  private WheelValues values;
-  private WheelValues valuesAbs;
-
   public MecanumMovement(Hardware hardware, OpMode opMode) throws Exception {
     super(hardware, opMode);
-    values = new WheelValues();
-    valuesAbs = new WheelValues();
     hardware.setMotorMode(Hardware.MotorMode.MECANUM);
     hardware.updateMotorConfig();
   }
 
   public MecanumMovement(Hardware hardware, LinearOpMode opMode, double ppi) throws Exception {
     super(hardware, opMode, ppi);
-    values = new WheelValues();
-    valuesAbs = new WheelValues();
     hardware.setMotorMode(Hardware.MotorMode.MECANUM);
     hardware.updateMotorConfig();
   }

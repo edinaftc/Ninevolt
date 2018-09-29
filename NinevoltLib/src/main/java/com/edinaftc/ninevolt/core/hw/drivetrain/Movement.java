@@ -31,10 +31,15 @@ public abstract class Movement {
 
   private ElapsedTime elapsedTime = new ElapsedTime();
 
+  protected WheelValues values;
+  protected WheelValues valuesAbs;
+
   public Movement(Hardware hardware, OpMode opMode) {
     this.hardware = hardware;
     this.ctx = opMode;
     this.telemetry = ctx.telemetry;
+    values = new WheelValues();
+    valuesAbs = new WheelValues();
     autoAllowed = false;
     rotationDeviation = 0.25;
     addVersionCode();
@@ -46,6 +51,8 @@ public abstract class Movement {
     this.telemetry = ctx.telemetry;
     this.ctxl = opMode;
     this.ppi = ppi;
+    values = new WheelValues();
+    valuesAbs = new WheelValues();
     autoAllowed = true;
     rotationDeviation = 0.2;
     addVersionCode();
