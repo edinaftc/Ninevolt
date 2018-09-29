@@ -37,27 +37,24 @@ public abstract class Movement {
   protected WheelValues valuesAbs;
 
   public Movement(Hardware hardware, OpMode opMode) {
-    this.hardware = hardware;
-    this.ctx = opMode;
-    this.telemetry = ctx.telemetry;
-    values = new WheelValues();
-    valuesAbs = new WheelValues();
-    autoAllowed = false;
-    rotationDeviation = 0.25;
-    addVersionCode();
+    this(hardware, opMode, false, 0.25);
   }
 
   public Movement(Hardware hardware, LinearOpMode opMode, double ppi) {
+    this(hardware, opMode, true, 0.2);
+    this.ctxl = opMode;
+    this.ppi = ppi;
+  }
+
+  private Movement(Hardware hardware, OpMode opMode, boolean autoAllowed, double rotationDeviation) {
     this.hardware = hardware;
     this.ctx = opMode;
     this.telemetry = ctx.telemetry;
-    this.ctxl = opMode;
-    this.ppi = ppi;
-    values = new WheelValues();
-    valuesAbs = new WheelValues();
-    autoAllowed = true;
-    rotationDeviation = 0.2;
-    addVersionCode();
+    this.values = new WheelValues();
+    this.valuesAbs = new WheelValues();
+    Ninevolt.addVersionCode(ctx);
+    this.autoAllowed = autoAllowed;
+    this.rotationDeviation = rotationDeviation;
   }
 
   /**
@@ -451,11 +448,4 @@ public abstract class Movement {
     else return true;
   }
 
-  private void addVersionCode() {
-    int textId = ctx.hardwareMap.appContext.getResources()
-        .getIdentifier("textDeviceName", "id",
-            ctx.hardwareMap.appContext.getPackageName());
-    TextView txt = ((TextView) ((Activity) ctx.hardwareMap.appContext).findViewById(textId));
-    txt.setText(String.format("%s (Ninevolt %s)", txt.getText(), BuildConfig.VERSION_NAME));
-  }
 }
