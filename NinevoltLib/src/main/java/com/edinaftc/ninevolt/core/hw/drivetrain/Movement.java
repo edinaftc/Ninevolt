@@ -1,8 +1,5 @@
 package com.edinaftc.ninevolt.core.hw.drivetrain;
 
-import android.app.Activity;
-import android.widget.TextView;
-import com.edinaftc.ninevolt.BuildConfig;
 import com.edinaftc.ninevolt.Config;
 import com.edinaftc.ninevolt.Ninevolt;
 import com.edinaftc.ninevolt.core.hw.Hardware;

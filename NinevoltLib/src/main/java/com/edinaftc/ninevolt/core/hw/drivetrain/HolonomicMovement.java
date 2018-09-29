@@ -3,10 +3,7 @@ package com.edinaftc.ninevolt.core.hw.drivetrain;
 import com.edinaftc.ninevolt.core.hw.Hardware;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
-
-import java.util.Locale;
 
 /**
  * The HolonomicMovement class contains movement methods for an omni-swerve
