@@ -21,14 +21,6 @@ public class HardwareBuilder {
     building = new Hardware();
   }
 
-  @Deprecated
-  public HardwareBuilder setMotorConfig(Hardware.MotorMode motorMode,
-                                        DcMotor.Direction motorDirection) {
-    building.setMotorMode(motorMode);
-    building.setMotorDirection(motorDirection);
-    return this;
-  }
-
   public HardwareBuilder setMotorDirection(DcMotor.Direction direction) {
     building.setMotorDirection(direction);
     return this;

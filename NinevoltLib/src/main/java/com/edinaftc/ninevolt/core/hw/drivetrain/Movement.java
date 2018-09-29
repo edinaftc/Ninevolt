@@ -136,23 +136,8 @@ public abstract class Movement {
     return defaultRunUsingEncoders;
   }
 
-  public boolean isVerbose() {
+  protected boolean isVerbose() {
     return config.minLoggingLevel(Config.LoggingLevel.VERBOSE);
-  }
-
-  /**
-   * Sets the logging output level to 'verbose' or 'recommended'.
-   * @deprecated Use {@link Config#setLoggingLevel(Config.LoggingLevel)} instead.
-   * @param verbose Whether everything should be logged.
-   * @see Config#setLoggingLevel(Config.LoggingLevel)
-   */
-  @Deprecated
-  public void setVerbose(boolean verbose) {
-    if (verbose) {
-      config.setLoggingLevel(Config.LoggingLevel.VERBOSE);
-    } else {
-      config.setLoggingLevel(Config.LoggingLevel.RECOMMENDED);
-    }
   }
 
   private boolean isAutoAllowed() {
