@@ -109,6 +109,29 @@ public abstract class Movement {
     }
   }
 
+  /**
+   * Clips wheel values so that the values never exceed +/- 1, but keeps
+   * proportions between values.
+   */
+  protected void scaleWheelValues() {
+    valuesAbs.mapFrom(values, new WheelValues.Mapper() {
+      @Override
+      public float run(float val) {
+        return Math.abs(val);
+      }
+    });
+
+    final float maxAbs = valuesAbs.max();
+    if (maxAbs > 1) {
+      values.map(new WheelValues.Mapper() {
+        @Override
+        public float run(float val) {
+          return val / maxAbs;
+        }
+      });
+    }
+  }
+
   protected abstract void setTargetX(int ticks);
   protected abstract void setTargetY(int ticks);
 

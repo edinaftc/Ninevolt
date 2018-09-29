@@ -46,22 +46,7 @@ public class StandardMovement extends Movement {
 
     /*  Clip the right/left values so that the values never exceed +/- 1, but
         keeping proportions */
-    valuesAbs.mapFrom(values, new WheelValues.Mapper() {
-      @Override
-      public float run(float val) {
-        return Math.abs(val);
-      }
-    });
-
-    final float maxAbs = valuesAbs.max();
-    if (maxAbs > 1) {
-      values.map(new WheelValues.Mapper() {
-        @Override
-        public float run(float val) {
-          return val / maxAbs;
-        }
-      });
-    }
+    scaleWheelValues();
 
     // Show power information to user
     logPowerInfo(startTime);
