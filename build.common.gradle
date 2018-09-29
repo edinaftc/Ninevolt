@@ -101,8 +101,4 @@ repositories {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.8'
-}
-
 apply from: 'build.release.gradle'

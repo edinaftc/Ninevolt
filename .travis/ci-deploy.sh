@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-../publish/artifactory
+# ../publish/artifactory
 ../publish/bintray
