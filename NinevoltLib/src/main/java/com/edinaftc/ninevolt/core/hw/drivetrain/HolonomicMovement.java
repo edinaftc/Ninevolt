@@ -58,32 +58,7 @@ public class HolonomicMovement extends Movement {
     }
 
     // Show power information to user
-    if (isVerbose()) {
-      telemetry.addData("Wheel Value Key", "(Front Left, Front Right, Back Left, Back Right)");
-      telemetry.addData("Wheel Values (theoretical)",
-          String.format(Locale.US, "(%.2f, %.2f, %.2f, %.2f)",
-              values.getFL(),
-              values.getFR(),
-              values.getBL(),
-              values.getBR()
-          )
-      );
-
-      if(hardware.motorFL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
-          hardware.motorFR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
-          hardware.motorBL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
-          hardware.motorBR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER) {
-        telemetry.addData("Wheel TPS",
-            String.format(Locale.US, "(%d, %d, %d, %d)",
-                (long) (hardware.motorFL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
-                (long) (hardware.motorFR.getCurrentPosition() / (ctx.getRuntime() - startTime)),
-                (long) (hardware.motorBL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
-                (long) (hardware.motorBR.getCurrentPosition() / (ctx.getRuntime() - startTime))
-            )
-        );
-      }
-      telemetry.update();
-    }
+    logPowerInfo(startTime);
 
     // Write the values to the motors
     hardware.setMotorPowers(values);

@@ -64,6 +64,15 @@ public class StandardMovement extends Movement {
     }
 
     // Show power information to user
+    logPowerInfo(startTime);
+
+    // Write the values to the motors
+    hardware.motorL.setPower(values.getFL());
+    hardware.motorR.setPower(values.getFR());
+  }
+
+  @Override
+  protected void logPowerInfo(double startTime) {
     if (isVerbose()) {
       telemetry.addData("Wheel Value Key", "(Left, Right)");
       telemetry.addData("Wheel Values (theoretical)",
@@ -84,10 +93,6 @@ public class StandardMovement extends Movement {
       }
       telemetry.update();
     }
-
-    // Write the values to the motors
-    hardware.motorL.setPower(values.getFL());
-    hardware.motorR.setPower(values.getFR());
   }
 
   @Override

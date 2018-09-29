@@ -14,6 +14,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
 
+import java.util.Locale;
+
 public abstract class Movement {
   private static final String TAG = "ninevolt.Movement.";
   protected Config config = Ninevolt.getConfig();
@@ -73,6 +75,39 @@ public abstract class Movement {
    * @param rVal Power to the right wheels. Positive is also forward.
    */
   public abstract void directTankDrive(float lVal, float rVal);
+
+  /**
+   * Logs the power information of the motors to the user via Telemetry.
+   * @param startTime - OpMode runtime when current drive command started
+   */
+  protected void logPowerInfo(double startTime) {
+    if (isVerbose()) {
+      telemetry.addData("Wheel Value Key", "(Front Left, Front Right, Back Left, Back Right)");
+      telemetry.addData("Wheel Values (theoretical)",
+          String.format(Locale.US, "(%.2f, %.2f, %.2f, %.2f)",
+              values.getFL(),
+              values.getFR(),
+              values.getBL(),
+              values.getBR()
+          )
+      );
+
+      if(hardware.motorFL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
+          hardware.motorFR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
+          hardware.motorBL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
+          hardware.motorBR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER) {
+        telemetry.addData("Wheel TPS",
+            String.format(Locale.US, "(%d, %d, %d, %d)",
+                (long) (hardware.motorFL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+                (long) (hardware.motorFR.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+                (long) (hardware.motorBL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
+                (long) (hardware.motorBR.getCurrentPosition() / (ctx.getRuntime() - startTime))
+            )
+        );
+      }
+      telemetry.update();
+    }
+  }
 
   protected abstract void setTargetX(int ticks);
   protected abstract void setTargetY(int ticks);
