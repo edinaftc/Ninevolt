@@ -40,7 +40,7 @@ public class StandardMovement extends Movement {
   public void directDrive(float xVal, float yVal, float rotVal) {
     double startTime = ctx.getRuntime();
 
-    // Mecanum formulas
+    // Arcade drive formulas
     values.setFL(yVal + rotVal);
     values.setFR(yVal - rotVal);
 

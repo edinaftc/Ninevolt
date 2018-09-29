@@ -32,7 +32,7 @@ public class HolonomicMovement extends Movement {
   public void directDrive(float xVal, float yVal, float rotVal) {
     double startTime = ctx.getRuntime();
 
-    // Mecanum formulas
+    // Holonomic formulas
     values.setFL(-yVal - xVal - rotVal);
     values.setFR( yVal - xVal - rotVal);
     values.setBR( yVal + xVal - rotVal);
