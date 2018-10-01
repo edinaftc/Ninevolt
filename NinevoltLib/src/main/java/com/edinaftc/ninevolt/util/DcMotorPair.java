@@ -17,9 +17,9 @@ public class DcMotorPair {
   public DcMotorPair(DcMotor motor1, DcMotor motor2) throws Exception {
     this.motor1 = motor1;
     this.motor2 = motor2;
-    if(motor1 == null ^ motor2 == null) {
+    if (motor1 == null ^ motor2 == null) {
       isSingleMotor = true;
-    } else {
+    } else if (motor1 == null) {
       throw new Exception(noMotorEx);
     }
   }
