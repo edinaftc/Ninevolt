@@ -26,9 +26,8 @@ build/
 
 *ASUS_PC_01*
 
-# Bintray authorization
-bintray.properties
-artifactory.properties
+# Publishing authorization information
 specific.properties
+
 # Git for Windows
 bash.exe.stackdump
