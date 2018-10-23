@@ -43,3 +43,4 @@ deploy:
     name: Travis CI
     on:
       all_branches: true
+      tags: false
