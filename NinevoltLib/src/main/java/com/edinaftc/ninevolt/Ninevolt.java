@@ -1,7 +1,5 @@
 package com.edinaftc.ninevolt;
 
-import android.app.Activity;
-import android.widget.TextView;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 public class Ninevolt {

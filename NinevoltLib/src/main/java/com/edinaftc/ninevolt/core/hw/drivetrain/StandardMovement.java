@@ -61,7 +61,7 @@ public class StandardMovement extends Movement {
     if (isVerbose()) {
       telemetry.addData("Wheel Value Key", "(Left, Right)");
       telemetry.addData("Wheel Values (theoretical)",
-          String.format(Locale.US, "(%.2f, %.2f, %.2f, %.2f)",
+          String.format(Locale.US, "(%.2f, %.2f)",
               values.getFL(),
               values.getFR()
           )
@@ -70,7 +70,7 @@ public class StandardMovement extends Movement {
       if(hardware.motorFL.getMode() == DcMotor.RunMode.RUN_USING_ENCODER &&
           hardware.motorFR.getMode() == DcMotor.RunMode.RUN_USING_ENCODER) {
         telemetry.addData("Wheel TPS",
-            String.format(Locale.US, "(%d, %d, %d, %d)",
+            String.format(Locale.US, "(%d, %d)",
                 (long) (hardware.motorFL.getCurrentPosition() / (ctx.getRuntime() - startTime)),
                 (long) (hardware.motorFR.getCurrentPosition() / (ctx.getRuntime() - startTime))
             )
