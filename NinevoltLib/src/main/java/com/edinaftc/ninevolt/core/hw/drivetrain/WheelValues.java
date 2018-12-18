@@ -1,44 +1,44 @@
 package com.edinaftc.ninevolt.core.hw.drivetrain;
 
 public class WheelValues {
-  private float fl;
-  private float fr;
-  private float bl;
-  private float br;
+  private double fl;
+  private double fr;
+  private double bl;
+  private double br;
 
   public interface Mapper {
-    float run(float val);
+    double run(double val);
   }
 
-  public void setFL(float fl) {
+  public void setFL(double fl) {
     this.fl = fl;
   }
 
-  public void setFR(float fr) {
+  public void setFR(double fr) {
     this.fr = fr;
   }
 
-  public void setBL(float bl) {
+  public void setBL(double bl) {
     this.bl = bl;
   }
 
-  public void setBR(float br) {
+  public void setBR(double br) {
     this.br = br;
   }
 
-  public float getFL() {
+  public double getFL() {
     return fl;
   }
 
-  public float getFR() {
+  public double getFR() {
     return fr;
   }
 
-  public float getBL() {
+  public double getBL() {
     return bl;
   }
 
-  public float getBR() {
+  public double getBR() {
     return br;
   }
 
@@ -65,9 +65,9 @@ public class WheelValues {
     setBR(runnable.run(wv.getBR()));
   }
 
-  public float max() {
-    float maxL = Math.max(fl, fr);
-    float maxR = Math.max(bl, br);
+  public double max() {
+    double maxL = Math.max(fl, fr);
+    double maxR = Math.max(bl, br);
     return Math.max(maxL, maxR);
   }
 

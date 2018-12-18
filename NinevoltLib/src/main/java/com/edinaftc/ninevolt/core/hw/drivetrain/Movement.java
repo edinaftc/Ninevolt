@@ -108,16 +108,16 @@ public abstract class Movement {
   protected void scaleWheelValues() {
     valuesAbs.mapFrom(values, new WheelValues.Mapper() {
       @Override
-      public float run(float val) {
+      public double run(double val) {
         return Math.abs(val);
       }
     });
 
-    final float maxAbs = valuesAbs.max();
+    final double maxAbs = valuesAbs.max();
     if (maxAbs > 1) {
       values.map(new WheelValues.Mapper() {
         @Override
-        public float run(float val) {
+        public double run(double val) {
           return val / maxAbs;
         }
       });
