@@ -7,7 +7,7 @@ public class WheelValues {
   private double br;
 
   public interface Mapper {
-    double run(double val);
+    double apply(double val);
   }
 
   public void setFL(double fl) {
@@ -42,27 +42,27 @@ public class WheelValues {
     return br;
   }
 
-  public void map(Mapper runnable) {
-    setFL(runnable.run(fl));
-    setFR(runnable.run(fr));
-    setBL(runnable.run(bl));
-    setBR(runnable.run(br));
+  public void map(Mapper mapper) {
+    setFL(mapper.apply(fl));
+    setFR(mapper.apply(fr));
+    setBL(mapper.apply(bl));
+    setBR(mapper.apply(br));
   }
 
-  public WheelValues mapTo(Mapper runnable) {
+  public WheelValues mapTo(Mapper mapper) {
     WheelValues wv = new WheelValues();
-    wv.setFL(runnable.run(this.fl));
-    wv.setFR(runnable.run(this.fr));
-    wv.setBL(runnable.run(this.bl));
-    wv.setBR(runnable.run(this.br));
+    wv.setFL(mapper.apply(this.fl));
+    wv.setFR(mapper.apply(this.fr));
+    wv.setBL(mapper.apply(this.bl));
+    wv.setBR(mapper.apply(this.br));
     return wv;
   }
 
-  public void mapFrom(WheelValues wv, Mapper runnable) {
-    setFL(runnable.run(wv.getFL()));
-    setFR(runnable.run(wv.getFR()));
-    setBL(runnable.run(wv.getBL()));
-    setBR(runnable.run(wv.getBR()));
+  public void mapFrom(WheelValues wv, Mapper mapper) {
+    setFL(mapper.apply(wv.getFL()));
+    setFR(mapper.apply(wv.getFR()));
+    setBL(mapper.apply(wv.getBL()));
+    setBR(mapper.apply(wv.getBR()));
   }
 
   public double max() {
