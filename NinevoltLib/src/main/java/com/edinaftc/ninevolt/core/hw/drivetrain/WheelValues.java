@@ -7,6 +7,18 @@ public class WheelValues {
   private double br;
 
   public interface Mapper {
+    Mapper ABS = new Mapper() {
+      @Override
+      public double apply(double val) {
+        return Math.abs(val);
+      }
+    };
+    Mapper SIGMOID = new Mapper() {
+      @Override
+      public double apply(double val) {
+        return val / (1 + Math.abs(val));
+      }
+    };
     double apply(double val);
   }
 
