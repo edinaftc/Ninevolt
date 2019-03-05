@@ -14,8 +14,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.jfrog.artifactory'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
 
     defaultConfig {
         minSdkVersion 19
@@ -51,12 +50,12 @@ repositories {
 }
 
 dependencies {
-    compile(name: 'RobotCore-release', ext: 'aar')
-    compile(name: 'Hardware-release', ext: 'aar')
-    compile(name: 'FtcCommon-release', ext: 'aar')
-    compile(name: 'Analytics-release', ext: 'aar')
-    compile(name: 'WirelessP2p-release', ext: 'aar')
-    compile(name: 'Analytics-release', ext: 'aar')
+    implementation(name: 'RobotCore-release', ext: 'aar')
+    implementation(name: 'Hardware-release', ext: 'aar')
+    implementation(name: 'FtcCommon-release', ext: 'aar')
+    implementation(name: 'Analytics-release', ext: 'aar')
+    implementation(name: 'WirelessP2p-release', ext: 'aar')
+    implementation(name: 'Analytics-release', ext: 'aar')
 }
 
 install {
